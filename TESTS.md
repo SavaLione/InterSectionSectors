@@ -1,11 +1,22 @@
 ```
-[original]
-[g++]
-CoI === 17
+  1   original    gcc   188
+  2   original    gcc   183
+  3   original    gcc   182
+  4   original    gcc   180
+  5   original    g++   182
+```
 
-real    5m42,390s
-user    2m38,013s
-sys     3m2,258s
+```
+[Original]
+(b7f4126)
+Для исходных данных
+  50 минут
+Для 50000 строк
+  CoI === 17
+  
+  real  3m9,808s
+  user  2m11,114s
+  sys   3m8,330s
 ```
 
 ```
@@ -36,14 +47,11 @@ sys     3m0,958s
 ```
 
 ```
-[Original]
-(b7f4126)
-Для исходных данных
-  50 минут
-Для 50000 строк
-  CoI === 17
-  
-  real  3m9,808s
-  user  2m11,114s
-  sys   3m8,330s
+[original]
+[g++]
+CoI === 17
+
+real    5m42,390s
+user    2m38,013s
+sys     3m2,258s
 ```
