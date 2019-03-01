@@ -11,7 +11,6 @@
   sys   3m8,330s
 ```
 
-
 ```
 [original]
 CoI === 16
@@ -19,4 +18,13 @@ CoI === 16
 real    5m18,770s
 user    2m13,216s
 sys     3m3,377s
+```
+
+```
+[original]
+CoI === 19
+
+real    5m15,422s
+user    2m11,292s
+sys     3m2,111s
 ```
