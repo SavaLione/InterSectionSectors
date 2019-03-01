@@ -4,6 +4,7 @@
   3   original    gcc   182
   4   original    gcc   180
   5   original    g++   182
+  6   original    g++   176   -O0
 ```
 
 ```
@@ -54,4 +55,14 @@ CoI === 17
 real    5m42,390s
 user    2m38,013s
 sys     3m2,258s
+```
+
+```
+[original]
+[g++ -O0]
+CoI === 17
+
+real    5m33,246s
+user    2m34,722s
+sys     2m56,677s
 ```
