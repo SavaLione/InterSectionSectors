@@ -1,2 +1,13 @@
-# InterSectionSectors
-InterSectionSectors
+```
+Тесты проводятся на VM 2x3.90GHz (intel)
+```
+
+```
+[Original]
+Для исходных данных
+  50 минут
+Для 50000 строк
+  real  3m9,808s
+  user  2m11,114s
+  sys   3m8,330s
+```
