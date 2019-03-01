@@ -28,3 +28,12 @@ real    5m15,422s
 user    2m11,292s
 sys     3m2,111s
 ```
+
+```
+[original]
+CoI === 15
+
+real    5m14,642s
+user    2m11,692s
+sys     3m0,958s
+```
