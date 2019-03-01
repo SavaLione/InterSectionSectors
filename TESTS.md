@@ -8,6 +8,8 @@
   7   original    g++   183   -O1
   8   original    g++   182   -O2
   9   original    g++   186   -O3
+  
+ 10   optimized   g++   178   -O2
 ```
 
 ```
@@ -98,4 +100,14 @@ CoI === 18
 real    4m1
 user    0m53
 sys     3m6
+```
+
+```
+[optimized]
+[g++ -O2]
+CoI === 18
+
+real    3m52
+user    0m52
+sys     2m58
 ```
