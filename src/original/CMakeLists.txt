@@ -1,0 +1,5 @@
+project(${ISS_ORIGINAL_NAME})
+
+set(ISS_ORIGINAL_SOURCES main.cpp)
+
+add_executable(${ISS_ORIGINAL_NAME} ${ISS_ORIGINAL_SOURCES})
