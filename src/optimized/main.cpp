@@ -60,8 +60,7 @@ bool CheckPointToSector(Point point, Sector sector)
     double r = sqrt((pow(v1.x, 2.0) + pow(v1.y, 2.0)));
     double angle = acos((v1.x * temp_x + v1.y * temp_y) / r) * 180 / Pi;
 
-    if ((r >= sector.min and r <= sector.max) and
-        (angle >= -sector.phi and angle <= sector.phi))
+    if ((r >= sector.min && r <= sector.max) && (angle >= -sector.phi && angle <= sector.phi))
     {
         return true;
     }
@@ -257,7 +256,7 @@ int main()
         Point temp_point;
         temp_point = CheckIntersectionSetOfSectors(*it);
 
-        if (temp_point.x == 0 and temp_point.y == 0)
+        if (temp_point.x == 0 && temp_point.y == 0)
         {
             cout << "Intesection of Sectors Not Found!\n";
         }
