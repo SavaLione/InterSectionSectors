@@ -179,3 +179,109 @@ Point CreateCircleFromArea(Point point, list<Sector> list_sectors, double *radiu
     *radius = sum_radius / count_point_border;
     return center_circle;
 }
+
+void PrintSetSectorsVec(vector<Sector> vector_sectors)
+{
+    printf("Set of Sectors\n");
+	
+	for(vector<Sector>::iterator it = vector_sectors.begin(); it != vector_sectors.end(); ++it)
+    {
+		printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
+    }
+	
+	printf("______________________________________________________________________\n\n");
+}
+
+Point CheckIntersectionSetOfSectorsVec(vector<Sector> vector_sector)
+{
+    Point point;
+    int count_point = 1000;
+
+    vector<Sector> last_sector;
+    vector<Sector>::iterator it = vector_sector.begin();
+    Sector init_sector = *it;
+
+    ++it;
+    for( ; it != vector_sector.end(); ++it)
+    {
+        last_sector.push_back(*it);
+    }
+
+    int i = 0;
+    while (i < count_point)
+    {
+        point = CreateRandomPointInSector(init_sector);
+
+        if (CheckPointToSetSectors(point, last_sector))
+            return point;
+        i++;
+    }
+    point.x = point.y = 0;
+    return point;
+}
+
+Point CreateCircleFromAreaVec(Point point, vector<Sector> vector_sectors, double *radius)
+{
+    int count_point_border = 100;
+    //int sum_x = 0;
+    //int sum_y = 0;
+	double sum_x = 0;
+	double sum_y = 0;
+	
+    vector<Point> vector_point_border;
+
+    for(int i = 0; i < count_point_border; i++)
+    {
+        Point current_point = CreateRandomPointToBorder(point, vector_sectors);
+        sum_x = sum_x + current_point.x;
+        sum_y = sum_y + current_point.y;
+        vector_point_border.push_back(current_point);
+
+    }
+
+    Point center_circle;
+    center_circle.x = sum_x / count_point_border;
+    center_circle.y = sum_y / count_point_border;
+
+    *radius = 0;
+    double sum_radius = 0;
+
+    for(vector<Point>::iterator it = vector_point_border.begin(); it != vector_point_border.end(); ++it)
+    {
+        sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
+    }
+
+    *radius = sum_radius / count_point_border;
+    return center_circle;
+}
+
+bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
+{
+    bool flag = true;
+
+    for(vector<Sector>::iterator it = vector_sector.begin(); it != vector_sector.end(); ++it)
+    {
+        if (!CheckPointToSector(point, *it))
+            flag = false;
+    }
+
+    return flag;
+}
+
+Point CreateRandomPointToBorder(Point point, vector<Sector> vector_sectors)
+{
+    int step = 5;
+    double angle = (rand() % 360 ) * M_PI / 180;
+
+    Point current_point;
+    current_point.x = point.x + step * cos(angle);
+    current_point.y = point.y + step * sin(angle);
+
+    while (CheckPointToSetSectors(current_point, vector_sectors))
+    {
+        current_point.x = current_point.x + step * cos(angle);
+        current_point.y = current_point.y + step * sin(angle);
+    }
+
+    return current_point;
+}

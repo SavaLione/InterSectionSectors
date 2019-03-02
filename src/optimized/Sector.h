@@ -2,6 +2,7 @@
 #define SECTOR_H
 
 #include <list>
+#include <vector>
 
 //структура данных, которая хранит в себе всю информацию о секторе
 //
@@ -37,5 +38,11 @@ void PrintSector(Sector sector);
 Point CheckIntersectionSetOfSectors(std::list<Sector> list_sector);
 Point CreateRandomPointToBorder(Point point, std::list<Sector> list_sectors);
 Point CreateCircleFromArea(Point point, std::list<Sector> list_sectors, double *radius);
+
+void PrintSetSectorsVec(std::vector<Sector> vector_sectors);
+Point CheckIntersectionSetOfSectorsVec(std::vector<Sector> vector_sector);
+Point CreateCircleFromAreaVec(Point point, std::vector<Sector> vector_sectors, double *radius);
+bool CheckPointToSetSectors(Point point, std::vector<Sector> vector_sector);
+Point CreateRandomPointToBorder(Point point, std::vector<Sector> vector_sectors);
 
 #endif // SECTOR_H

@@ -24,16 +24,21 @@ int main()
     srand( time(NULL));
     int count_set = 0;
     int count_intersection = 0;
-    list<list<Sector>> data;
-	data = ReadDataFromFile((char*)"data.test");
+    //list<list<Sector>> data;
+	//data = ReadDataFromFile((char*)"data.test");
+	vector<vector<Sector>> data;
+	data = ReadData((char*)"data.test");
 	
-    for(std::list<list<Sector> >::iterator it = data.begin(); it != data.end(); ++it)
+    //for(std::list<list<Sector> >::iterator it = data.begin(); it != data.end(); ++it)
+	for(vector<vector<Sector> >::iterator it = data.begin(); it != data.end(); ++it)
     {
 		printf("Number set == %i\n", count_set);
 		
-        PrintSetSectors(*it);
+        //PrintSetSectors(*it);
+		PrintSetSectorsVec(*it);
         Point temp_point;
-        temp_point = CheckIntersectionSetOfSectors(*it);
+        //temp_point = CheckIntersectionSetOfSectors(*it);
+		temp_point = CheckIntersectionSetOfSectorsVec(*it);
 
         if (temp_point.x == 0 && temp_point.y == 0)
         {
@@ -42,7 +47,8 @@ int main()
         else
         {
             double radius = 0;
-            Point center_circle = CreateCircleFromArea(temp_point, *it, &radius);
+            //Point center_circle = CreateCircleFromArea(temp_point, *it, &radius);
+			Point center_circle = CreateCircleFromAreaVec(temp_point, *it, &radius);
 			printf("Center Circle -- (%lf ; %lf ),    Radius = %lf\n", center_circle.x, center_circle.y, radius);
             count_intersection++;
 
