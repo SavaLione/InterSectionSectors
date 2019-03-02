@@ -1,6 +1,6 @@
-#include <iostream>
+//#include <iostream>
 #include <stdlib.h>
-#include <string.h>
+//#include <string.h>
 #include <math.h>
 #include <time.h>
 #include <list>
@@ -35,14 +35,18 @@ struct Point
 
 void PrintSetSectors(list<Sector> list_sectors)
 {
-    cout << "Set of Sectors\n";
-    for(std::list<Sector>::iterator it = list_sectors.begin(); it != list_sectors.end(); ++it)
+	
+    //cout << "Set of Sectors\n";
+    printf("Set of Sectors\n");
+	
+	for(std::list<Sector>::iterator it = list_sectors.begin(); it != list_sectors.end(); ++it)
     {
-        cout << "Sector: (" << (*it).x << " ; " << (*it).y << ")"
-        << "    Azimut - " << (*it).azim << "     Phi = " << (*it).phi
-        << "    Diapazon === [" << (*it).min << " - " << (*it).max << "]\n";
+        //cout << "Sector: (" << (*it).x << " ; " << (*it).y << ")" << "    Azimut - " << (*it).azim << "     Phi = " << (*it).phi << "    Diapazon === [" << (*it).min << " - " << (*it).max << "]\n";
+		printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
     }
-    cout << "______________________________________________________________________\n\n";
+	
+    //cout << "______________________________________________________________________\n\n";
+	printf("______________________________________________________________________\n\n");
 }
 
 
@@ -101,9 +105,8 @@ bool CheckPointToSetSectors(Point point, list<Sector> list_sector)
 
 void PrintSector(Sector sector)
 {
-    cout << "Sector: (" << sector.x << " ; " << sector.y << ")\n"
-    << "Azimut - " << sector.azim << "     Phi = " << sector.phi
-    << "\nDiapazon === [" << sector.min << " - " << sector.max << "]\n";
+    //cout << "Sector: (" << sector.x << " ; " << sector.y << ")\n" << "Azimut - " << sector.azim << "     Phi = " << sector.phi << "\nDiapazon === [" << sector.min << " - " << sector.max << "]\n";
+	printf("Sector: (%i ; %i)\nAzimut - %lf     Phi = %lf\nDiapazon === [%i - %i]\n", sector.x, sector.y, sector.azim, sector.phi, sector.min, sector.max);
 }
 
 //Функция проверяет, есть ли существование пересечения списка секторов
@@ -121,7 +124,6 @@ Point CheckIntersectionSetOfSectors(list<Sector> list_sector)
     ++it;
     for( ; it != list_sector.end(); ++it)
     {
-
         last_sector.push_back(*it);
     }
 
@@ -190,8 +192,7 @@ Point CreateCircleFromArea(Point point, list<Sector> list_sectors, double *radiu
 
     for(std::list<Point>::iterator it = list_point_border.begin(); it != list_point_border.end(); ++it)
     {
-        sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) +
-                           pow((*it).y - center_circle.y, 2.0));
+        sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
     }
 
     *radius = sum_radius / count_point_border;
@@ -251,28 +252,36 @@ int main()
 
     for(std::list<list<Sector> >::iterator it = data.begin(); it != data.end(); ++it)
     {
-        cout << "Number set == " << count_set << endl;
+        //cout << "Number set == " << count_set << endl;
+		printf("Number set == %i\n", count_set);
+		
         PrintSetSectors(*it);
         Point temp_point;
         temp_point = CheckIntersectionSetOfSectors(*it);
 
         if (temp_point.x == 0 && temp_point.y == 0)
         {
-            cout << "Intesection of Sectors Not Found!\n";
+            //cout << "Intesection of Sectors Not Found!\n";
+			printf("Intesection of Sectors Not Found!\n");
         }
         else
         {
             double radius = 0;
-            Point center_circle = CreateCircleFromArea(temp_point,
-                                    *it, &radius);
-            cout << "Center Circle -- (" << center_circle.x <<
-                " ; " << center_circle.y << " ),    Radius = " << radius << endl;
+            Point center_circle = CreateCircleFromArea(temp_point, *it, &radius);
+			
+            //cout << "Center Circle -- (" << center_circle.x << " ; " << center_circle.y << " ),    Radius = " << radius << endl;
+			printf("Center Circle -- (%i ; %i ),    Radius = %i\n", center_circle.x, center_circle.y, radius);
+			
             count_intersection++;
 
         }
-        cout << endl << endl;
-        count_set++;
+        //cout << endl << endl;
+        printf("\n\n");
+		
+		count_set++;
     }
-    cout << "\n\nCount of Intersection === " << count_intersection;
-    return 0;
+    //cout << "\n\nCount of Intersection === " << count_intersection;
+    printf("\n\nCount of Intersection === %i", count_intersection);
+	
+	return 0;
 }
