@@ -1,17 +1,31 @@
-//#include <iostream>
-#include <stdlib.h>
-
 #ifdef __linux__ 
 #include <string.h>
+#elif _WIN32
+#define _USE_MATH_DEFINES
 #endif
 
+#include <stdlib.h>
 #include <math.h>
 #include <time.h>
 #include <list>
 #include <fstream>
 
 using namespace std;
-#define Pi 3.141569
+//#define Pi 3.141569
+
+/*
+double get_PI()
+{
+    double pi;
+    __asm
+    {
+        fldpi
+        fstp pi
+    }
+    return pi;
+}
+*/
+
 //структура данных, которая хранит в себе всю информацию о секторе
 //
 struct Sector
@@ -62,11 +76,11 @@ bool CheckPointToSector(Point point, Sector sector)
     v1.y = point.y - sector.y;
 
     double temp_x, temp_y;
-    temp_x = cos((90 - sector.azim) * Pi / 180);
-    temp_y = sin((90 - sector.azim) * Pi / 180);
+    temp_x = cos((90 - sector.azim) * M_PI / 180);
+    temp_y = sin((90 - sector.azim) * M_PI / 180);
 
     double r = sqrt((pow(v1.x, 2.0) + pow(v1.y, 2.0)));
-    double angle = acos((v1.x * temp_x + v1.y * temp_y) / r) * 180 / Pi;
+    double angle = acos((v1.x * temp_x + v1.y * temp_y) / r) * 180 / M_PI;
 
     if ((r >= sector.min && r <= sector.max) && (angle >= -sector.phi && angle <= sector.phi))
     {
@@ -85,8 +99,8 @@ Point CreateRandomPointInSector(Sector sect)
     double angle = (sect.azim + rand()% (2 * (int)sect.phi) - sect.phi);
 
     Point rez;
-    rez.x = sect.x + radius * cos((90 - angle) * Pi / 180);
-    rez.y = sect.y + radius * sin((90 - angle) * Pi / 180);
+    rez.x = sect.x + radius * cos((90 - angle) * M_PI / 180);
+    rez.y = sect.y + radius * sin((90 - angle) * M_PI / 180);
 
 
     return rez;
@@ -152,7 +166,7 @@ Point CheckIntersectionSetOfSectors(list<Sector> list_sector)
 Point CreateRandomPointToBorder(Point point, list<Sector> list_sectors)
 {
     int step = 5;
-    double angle = (rand() % 360 ) * Pi / 180;
+    double angle = (rand() % 360 ) * M_PI / 180;
 
     Point current_point;
     current_point.x = point.x + step * cos(angle);
