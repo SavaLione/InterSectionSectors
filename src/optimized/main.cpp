@@ -34,11 +34,9 @@ int main()
     {
 		printf("Number set == %i\n", count_set);
 		
-        //PrintSetSectors(*it);
-		PrintSetSectorsVec(*it);
+        PrintSetSectors(*it);
         Point temp_point;
-        //temp_point = CheckIntersectionSetOfSectors(*it);
-		temp_point = CheckIntersectionSetOfSectorsVec(*it);
+        temp_point = CheckIntersectionSetOfSectors(*it);
 
         if (temp_point.x == 0 && temp_point.y == 0)
         {
@@ -47,8 +45,7 @@ int main()
         else
         {
             double radius = 0;
-            //Point center_circle = CreateCircleFromArea(temp_point, *it, &radius);
-			Point center_circle = CreateCircleFromAreaVec(temp_point, *it, &radius);
+            Point center_circle = CreateCircleFromArea(temp_point, *it, &radius);
 			printf("Center Circle -- (%lf ; %lf ),    Radius = %lf\n", center_circle.x, center_circle.y, radius);
             count_intersection++;
 

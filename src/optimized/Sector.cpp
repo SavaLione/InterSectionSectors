@@ -180,7 +180,7 @@ Point CreateCircleFromArea(Point point, list<Sector> list_sectors, double *radiu
     return center_circle;
 }
 
-void PrintSetSectorsVec(vector<Sector> vector_sectors)
+void PrintSetSectors(vector<Sector> vector_sectors)
 {
     printf("Set of Sectors\n");
 	
@@ -192,7 +192,7 @@ void PrintSetSectorsVec(vector<Sector> vector_sectors)
 	printf("______________________________________________________________________\n\n");
 }
 
-Point CheckIntersectionSetOfSectorsVec(vector<Sector> vector_sector)
+Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
 {
     Point point;
     int count_point = 1000;
@@ -220,7 +220,7 @@ Point CheckIntersectionSetOfSectorsVec(vector<Sector> vector_sector)
     return point;
 }
 
-Point CreateCircleFromAreaVec(Point point, vector<Sector> vector_sectors, double *radius)
+Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *radius)
 {
     int count_point_border = 100;
     //int sum_x = 0;
