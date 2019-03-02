@@ -19,12 +19,14 @@ vector<vector<Sector>> ReadDataFromFile(char* file)
 {
 	vector<vector<Sector>> data;
 	char buff[500];
+	char * pch;
 	
 	ifstream fin(file);
 	while (!fin.eof())
 	{
 		fin.getline(buff, 500);
-		char * pch = strtok (buff," \t");
+		//char * pch = strtok (buff," \t");
+		pch = strtok (buff," \t");
 		vector<Sector> temp_list_sectors;
 		while (pch != NULL)
 		{

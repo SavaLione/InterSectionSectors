@@ -18,14 +18,19 @@ using namespace std;
 
 void PrintSetSectors(vector<Sector> vector_sectors)
 {
+#if DATA_OUTPUT
     printf("Set of Sectors\n");
-	
+#endif
+
 	for(vector<Sector>::iterator it = vector_sectors.begin(); it != vector_sectors.end(); ++it)
     {
+#if DATA_OUTPUT
 		printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
+#endif
     }
-	
+#if DATA_OUTPUT
 	printf("______________________________________________________________________\n\n");
+#endif
 }
 
 //Проверка, принадлежит ли точка сектору...
@@ -83,7 +88,9 @@ bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
 
 void PrintSector(Sector sector)
 {
+#if DATA_OUTPUT
 	printf("Sector: (%i ; %i)\nAzimut - %lf     Phi = %lf\nDiapazon === [%i - %i]\n", sector.x, sector.y, sector.azim, sector.phi, sector.min, sector.max);
+#endif
 }
 
 //Функция проверяет, есть ли существование пересечения списка секторов
@@ -153,10 +160,12 @@ Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *r
 	double sum_y = 0;
 	
     vector<Point> vector_point_border;
-
+	Point current_point;
+	
     for(int i = 0; i < count_point_border; i++)
     {
-        Point current_point = CreateRandomPointToBorder(point, vector_sectors);
+        //Point current_point = CreateRandomPointToBorder(point, vector_sectors);
+		current_point = CreateRandomPointToBorder(point, vector_sectors);
         sum_x = sum_x + current_point.x;
         sum_y = sum_y + current_point.y;
         vector_point_border.push_back(current_point);
