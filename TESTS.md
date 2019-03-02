@@ -10,6 +10,7 @@
   9   original    g++   186   -O3
   
  10   optimized   g++   178   -O2
+ 11   optimized   g++   194   -O2     (remove cout)
 ```
 
 ```
@@ -112,4 +113,16 @@ CoI === 18
 real    3m52
 user    0m52
 sys     2m58
+```
+
+```
+[optimized]
+(f5e4a95)
+[11]
+[g++ -O2 (remove cout)]
+CoI === 18
+
+real    4m8
+user    0m52
+sys     3m14
 ```
