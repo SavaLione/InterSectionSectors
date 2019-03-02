@@ -252,8 +252,9 @@ int main()
     int count_set = 0;
     int count_intersection = 0;
     list<list<Sector> > data;
-    data = ReadDataFromFile("data.test");
-
+    //data = ReadDataFromFile("data.test");
+	data = ReadDataFromFile((char*)"data.test");
+	
     for(std::list<list<Sector> >::iterator it = data.begin(); it != data.end(); ++it)
     {
         //cout << "Number set == " << count_set << endl;
