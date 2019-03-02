@@ -1,3 +1,10 @@
+#define DATA_OUTPUT 0
+#define TIME_TEST 1
+
+#if TIME_TEST
+#include <chrono>
+#endif
+
 #include <stdio.h>
 #include <time.h>
 #include <cstdlib>
@@ -5,12 +12,14 @@
 #include "ReadFile.h"
 #include "Sector.h"
 
-#define DATA_OUTPUT 0
-
 using namespace std;
 
 int main()
 {
+#if TIME_TEST
+	std::chrono::time_point<std::chrono::system_clock> start, end;
+    start = std::chrono::system_clock::now();
+#endif
     srand(time(NULL));
 	
     int count_set = 0;
@@ -53,6 +62,14 @@ int main()
 		count_set++;
     }
     printf("\n\nCount of Intersection === %i", count_intersection);
+	
+#if TIME_TEST
+	end = std::chrono::system_clock::now();
+ 
+    int elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds> (end-start).count();
+    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+	printf("\n\n\n\nTIME\t%i", elapsed_seconds);
+#endif
 	
 	return 0;
 }
