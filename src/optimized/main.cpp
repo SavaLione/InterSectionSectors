@@ -6,30 +6,15 @@
 #include "Sector.h"
 
 using namespace std;
-/*
-double get_PI()
-{
-    double pi;
-    __asm
-    {
-        fldpi
-        fstp pi
-    }
-    return pi;
-}
-*/
 
 int main()
 {
     srand( time(NULL));
     int count_set = 0;
     int count_intersection = 0;
-    //list<list<Sector>> data;
-	//data = ReadDataFromFile((char*)"data.test");
 	vector<vector<Sector>> data;
-	data = ReadData((char*)"data.test");
+	data = ReadDataFromFile((char*)"data.test");
 	
-    //for(std::list<list<Sector> >::iterator it = data.begin(); it != data.end(); ++it)
 	for(vector<vector<Sector> >::iterator it = data.begin(); it != data.end(); ++it)
     {
 		printf("Number set == %i\n", count_set);

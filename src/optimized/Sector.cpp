@@ -27,19 +27,6 @@ void PrintSetSectors(vector<Sector> vector_sectors)
 	
 	printf("______________________________________________________________________\n\n");
 }
-/*
-void PrintSetSectors(list<Sector> list_sectors)
-{
-    printf("Set of Sectors\n");
-	
-	for(std::list<Sector>::iterator it = list_sectors.begin(); it != list_sectors.end(); ++it)
-    {
-		printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
-    }
-	
-	printf("______________________________________________________________________\n\n");
-}
-*/
 
 //Проверка, принадлежит ли точка сектору...
 bool CheckPointToSector(Point point, Sector sector)
@@ -93,20 +80,6 @@ bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
 
     return flag;
 }
-/*
-bool CheckPointToSetSectors(Point point, list<Sector> list_sector)
-{
-    bool flag = true;
-
-    for(std::list<Sector>::iterator it = list_sector.begin(); it != list_sector.end(); ++it)
-    {
-        if (!CheckPointToSector(point, *it))
-            flag = false;
-    }
-
-    return flag;
-}
-*/
 
 void PrintSector(Sector sector)
 {
@@ -143,35 +116,6 @@ Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
     point.x = point.y = 0;
     return point;
 }
-/*
-Point CheckIntersectionSetOfSectors(list<Sector> list_sector)
-{
-    Point point;
-    int count_point = 1000;
-
-    list<Sector> last_sector;
-    std::list<Sector>::iterator it = list_sector.begin();
-    Sector init_sector = *it;
-
-    ++it;
-    for( ; it != list_sector.end(); ++it)
-    {
-        last_sector.push_back(*it);
-    }
-
-    int i = 0;
-    while (i < count_point)
-    {
-        point = CreateRandomPointInSector(init_sector);
-
-        if (CheckPointToSetSectors(point, last_sector))
-            return point;
-        i++;
-    }
-    point.x = point.y = 0;
-    return point;
-}
-*/
 
 //Функция создает случайную точку вблизи границы области пеерсечения секторов
 //Принимает в себя точку, которая должна лежать внтри этого пересечения
@@ -195,25 +139,6 @@ Point CreateRandomPointToBorder(Point point, vector<Sector> vector_sectors)
 
     return current_point;
 }
-/*
-Point CreateRandomPointToBorder(Point point, list<Sector> list_sectors)
-{
-    int step = 5;
-    double angle = (rand() % 360 ) * M_PI / 180;
-
-    Point current_point;
-    current_point.x = point.x + step * cos(angle);
-    current_point.y = point.y + step * sin(angle);
-
-    while (CheckPointToSetSectors(current_point, list_sectors))
-    {
-        current_point.x = current_point.x + step * cos(angle);
-        current_point.y = current_point.y + step * sin(angle);
-    }
-
-    return current_point;
-}
-*/
 
 //Функция находит центр коуржности, описывающей пересечения секторов...
 //Кроме того, она считает и центр этой окружности,
@@ -253,39 +178,3 @@ Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *r
     *radius = sum_radius / count_point_border;
     return center_circle;
 }
-/*
-Point CreateCircleFromArea(Point point, list<Sector> list_sectors, double *radius)
-{
-    int count_point_border = 100;
-    //int sum_x = 0;
-    //int sum_y = 0;
-	double sum_x = 0;
-	double sum_y = 0;
-	
-    list<Point> list_point_border;
-
-    for(int i = 0; i < count_point_border; i++)
-    {
-        Point current_point = CreateRandomPointToBorder(point, list_sectors);
-        sum_x = sum_x + current_point.x;
-        sum_y = sum_y + current_point.y;
-        list_point_border.push_back(current_point);
-
-    }
-
-    Point center_circle;
-    center_circle.x = sum_x / count_point_border;
-    center_circle.y = sum_y / count_point_border;
-
-    *radius = 0;
-    double sum_radius = 0;
-
-    for(std::list<Point>::iterator it = list_point_border.begin(); it != list_point_border.end(); ++it)
-    {
-        sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
-    }
-
-    *radius = sum_radius / count_point_border;
-    return center_circle;
-}
-*/
