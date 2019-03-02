@@ -16,6 +16,18 @@
 
 using namespace std;
 
+void PrintSetSectors(vector<Sector> vector_sectors)
+{
+    printf("Set of Sectors\n");
+	
+	for(vector<Sector>::iterator it = vector_sectors.begin(); it != vector_sectors.end(); ++it)
+    {
+		printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
+    }
+	
+	printf("______________________________________________________________________\n\n");
+}
+/*
 void PrintSetSectors(list<Sector> list_sectors)
 {
     printf("Set of Sectors\n");
@@ -27,7 +39,7 @@ void PrintSetSectors(list<Sector> list_sectors)
 	
 	printf("______________________________________________________________________\n\n");
 }
-
+*/
 
 //Проверка, принадлежит ли точка сектору...
 bool CheckPointToSector(Point point, Sector sector)
@@ -277,15 +289,3 @@ Point CreateCircleFromArea(Point point, list<Sector> list_sectors, double *radiu
     return center_circle;
 }
 */
-
-void PrintSetSectors(vector<Sector> vector_sectors)
-{
-    printf("Set of Sectors\n");
-	
-	for(vector<Sector>::iterator it = vector_sectors.begin(); it != vector_sectors.end(); ++it)
-    {
-		printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
-    }
-	
-	printf("______________________________________________________________________\n\n");
-}
