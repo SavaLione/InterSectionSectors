@@ -11,6 +11,7 @@
   
  10   optimized   g++   178   -O2
  11   optimized   g++   194   -O2     (remove cout)
+ 12   optimized   g++   190   -O0
 ```
 
 ```
@@ -125,4 +126,15 @@ CoI === 18
 real    4m8
 user    0m52
 sys     3m14
+```
+
+```
+[optimized]
+[12]
+[g++ -O0]
+CoI === 16
+
+real    5m51
+user    2m38
+sys     3m10
 ```
