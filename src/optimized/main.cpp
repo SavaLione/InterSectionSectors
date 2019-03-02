@@ -1,6 +1,10 @@
 //#include <iostream>
 #include <stdlib.h>
-//#include <string.h>
+
+#ifdef __linux__ 
+#include <string.h>
+#endif
+
 #include <math.h>
 #include <time.h>
 #include <list>
