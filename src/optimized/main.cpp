@@ -46,24 +46,22 @@ struct Sector
 //Структура данных - точка на плоскости
 struct Point
 {
-    int x;
-    int y;
+    //int x;
+    //int y;
+	double x;
+	double y;
 };
 
 
 void PrintSetSectors(list<Sector> list_sectors)
 {
-	
-    //cout << "Set of Sectors\n";
     printf("Set of Sectors\n");
 	
 	for(std::list<Sector>::iterator it = list_sectors.begin(); it != list_sectors.end(); ++it)
     {
-        //cout << "Sector: (" << (*it).x << " ; " << (*it).y << ")" << "    Azimut - " << (*it).azim << "     Phi = " << (*it).phi << "    Diapazon === [" << (*it).min << " - " << (*it).max << "]\n";
 		printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
     }
 	
-    //cout << "______________________________________________________________________\n\n";
 	printf("______________________________________________________________________\n\n");
 }
 
@@ -123,7 +121,6 @@ bool CheckPointToSetSectors(Point point, list<Sector> list_sector)
 
 void PrintSector(Sector sector)
 {
-    //cout << "Sector: (" << sector.x << " ; " << sector.y << ")\n" << "Azimut - " << sector.azim << "     Phi = " << sector.phi << "\nDiapazon === [" << sector.min << " - " << sector.max << "]\n";
 	printf("Sector: (%i ; %i)\nAzimut - %lf     Phi = %lf\nDiapazon === [%i - %i]\n", sector.x, sector.y, sector.azim, sector.phi, sector.min, sector.max);
 }
 
@@ -188,8 +185,11 @@ Point CreateRandomPointToBorder(Point point, list<Sector> list_sectors)
 Point CreateCircleFromArea(Point point, list<Sector> list_sectors, double *radius)
 {
     int count_point_border = 100;
-    int sum_x = 0;
-    int sum_y = 0;
+    //int sum_x = 0;
+    //int sum_y = 0;
+	double sum_x = 0;
+	double sum_y = 0;
+	
     list<Point> list_point_border;
 
     for(int i = 0; i < count_point_border; i++)
@@ -248,7 +248,8 @@ list<list<Sector> > ReadDataFromFile(char* name)
             pch = strtok (NULL," \t");
             temp_sector.max = atoi(pch);
             pch = strtok (NULL," \t");
-
+			
+			
             temp_list_sectors.push_back(temp_sector);
         }
 
@@ -266,12 +267,10 @@ int main()
     int count_set = 0;
     int count_intersection = 0;
     list<list<Sector> > data;
-    //data = ReadDataFromFile("data.test");
 	data = ReadDataFromFile((char*)"data.test");
 	
     for(std::list<list<Sector> >::iterator it = data.begin(); it != data.end(); ++it)
     {
-        //cout << "Number set == " << count_set << endl;
 		printf("Number set == %i\n", count_set);
 		
         PrintSetSectors(*it);
@@ -280,26 +279,20 @@ int main()
 
         if (temp_point.x == 0 && temp_point.y == 0)
         {
-            //cout << "Intesection of Sectors Not Found!\n";
 			printf("Intesection of Sectors Not Found!\n");
         }
         else
         {
             double radius = 0;
             Point center_circle = CreateCircleFromArea(temp_point, *it, &radius);
-			
-            //cout << "Center Circle -- (" << center_circle.x << " ; " << center_circle.y << " ),    Radius = " << radius << endl;
-			printf("Center Circle -- (%i ; %i ),    Radius = %lf\n", center_circle.x, center_circle.y, radius);
-			
+			printf("Center Circle -- (%lf ; %lf ),    Radius = %lf\n", center_circle.x, center_circle.y, radius);
             count_intersection++;
 
         }
-        //cout << endl << endl;
         printf("\n\n");
 		
 		count_set++;
     }
-    //cout << "\n\nCount of Intersection === " << count_intersection;
     printf("\n\nCount of Intersection === %i", count_intersection);
 	
 	return 0;
