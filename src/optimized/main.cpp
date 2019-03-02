@@ -274,7 +274,7 @@ int main()
             Point center_circle = CreateCircleFromArea(temp_point, *it, &radius);
 			
             //cout << "Center Circle -- (" << center_circle.x << " ; " << center_circle.y << " ),    Radius = " << radius << endl;
-			printf("Center Circle -- (%i ; %i ),    Radius = %i\n", center_circle.x, center_circle.y, radius);
+			printf("Center Circle -- (%i ; %i ),    Radius = %lf\n", center_circle.x, center_circle.y, radius);
 			
             count_intersection++;
 
