@@ -1,10 +1,13 @@
 /*
-#ifdef __linux__ 
+#ifdef __linux__
 #include <string.h>
 #elif _WIN32
 #define _USE_MATH_DEFINES
 #endif
 */
+
+#define DATA_OUTPUT 0
+
 #ifdef _WIN32
 #define _USE_MATH_DEFINES
 #endif
@@ -19,9 +22,26 @@ using namespace std;
 void PrintSetSectors(vector<Sector> vector_sectors)
 {
 #if DATA_OUTPUT
+    #pragma omp parallel
+    {
+        auto it = vector_sectors.begin();
+        #pragma openmp for
+        for(; it != vector_sectors.end(); ++it)
+        {
+            printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
+        }
+    }
+    printf("______________________________________________________________________\n\n");
+#endif
+}
+/*
+void PrintSetSectors(vector<Sector> vector_sectors)
+{
+#if DATA_OUTPUT
     printf("Set of Sectors\n");
 #endif
 
+	#pragma omp for
 	for(vector<Sector>::iterator it = vector_sectors.begin(); it != vector_sectors.end(); ++it)
     {
 #if DATA_OUTPUT
@@ -32,6 +52,7 @@ void PrintSetSectors(vector<Sector> vector_sectors)
 	printf("______________________________________________________________________\n\n");
 #endif
 }
+*/
 
 //Проверка, принадлежит ли точка сектору...
 bool CheckPointToSector(Point point, Sector sector)
@@ -70,6 +91,20 @@ Point CreateRandomPointInSector(Sector sect)
 
     return rez;
 }
+/*
+Point CreateRandomPointInSector(Sector sect)
+{
+    int radius = sect.min + rand()%(sect.max - sect.min);
+    double angle = (sect.azim + rand()% (2 * (int)sect.phi) - sect.phi);
+
+    Point rez;
+    rez.x = sect.x + radius * cos((90 - angle) * M_PI / 180);
+    rez.y = sect.y + radius * sin((90 - angle) * M_PI / 180);
+
+
+    return rez;
+}
+*/
 
 
 //Функция проверяет, принадлежит ли заданная точка списку секторов...
@@ -110,6 +145,33 @@ Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
     {
         last_sector.push_back(*it);
     }
+	
+	#pragma openmp for
+	for (int i = 0; i < count_point; i++)
+	{
+		point = CreateRandomPointInSector(init_sector);
+		if (CheckPointToSetSectors(point, last_sector))
+            return point;
+	}
+	
+    point.x = point.y = 0;
+    return point;
+}
+/*
+Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
+{
+    Point point;
+    int count_point = 1000;
+
+    vector<Sector> last_sector;
+    vector<Sector>::iterator it = vector_sector.begin();
+    Sector init_sector = *it;
+
+    ++it;
+    for( ; it != vector_sector.end(); ++it)
+    {
+        last_sector.push_back(*it);
+    }
 
     int i = 0;
     while (i < count_point)
@@ -123,6 +185,7 @@ Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
     point.x = point.y = 0;
     return point;
 }
+*/
 
 //Функция создает случайную точку вблизи границы области пеерсечения секторов
 //Принимает в себя точку, которая должна лежать внтри этого пересечения
@@ -158,10 +221,10 @@ Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *r
     //int sum_y = 0;
 	double sum_x = 0;
 	double sum_y = 0;
-	
+
     vector<Point> vector_point_border;
 	Point current_point;
-	
+
     for(int i = 0; i < count_point_border; i++)
     {
         //Point current_point = CreateRandomPointToBorder(point, vector_sectors);
@@ -179,11 +242,41 @@ Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *r
     *radius = 0;
     double sum_radius = 0;
 
-    for(vector<Point>::iterator it = vector_point_border.begin(); it != vector_point_border.end(); ++it)
+    
+	/*
+    #pragma omp parallel
+    {
+        auto it = vector_sectors.begin();
+        #pragma openmp for
+        for(; it != vector_sectors.end(); ++it)
+        {
+            printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
+        }
+    }
+	*/
+	
+	#pragma omp parallel
+	{
+		auto it = vector_point_border.begin();
+		#pragma openmp for
+		for(; it != vector_point_border.end(); ++it)
+		{
+			sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
+		}
+	}
+	/*
+	for(vector<Point>::iterator it = vector_point_border.begin(); it != vector_point_border.end(); ++it)
     {
         sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
     }
-
+	*/
+	/*
+	for(vector<Point>::iterator it = vector_point_border.begin(); it != vector_point_border.end(); ++it)
+    {
+        sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
+    }
+	*/
+	
     *radius = sum_radius / count_point_border;
     return center_circle;
 }

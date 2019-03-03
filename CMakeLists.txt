@@ -10,6 +10,14 @@ set(ISS_OPTIMIZED_NAME InterSectionSectors_Optimized)
 set(ISS_ORIGINAL_NAME InterSectionSectors_Original)
 
 ################################
+# Build
+################################
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O2 -fopenmp")
+#set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -O0 -fopenmp"")
+#set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -O2 -fopenmp"")
+
+################################
 # 
 ################################
 

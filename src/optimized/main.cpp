@@ -1,5 +1,11 @@
 #define DATA_OUTPUT 0
+#define PARALLEL 1
+
+#ifdef __linux__
 #define TIME_TEST 1
+#elif __MINGW32__
+#define TIME_TEST 1
+#endif
 
 #if TIME_TEST
 #include <chrono>
@@ -16,20 +22,29 @@ using namespace std;
 
 int main()
 {
+#if PARALLEL
+	#pragma omp parallel
+	{
+		printf("PARALLEL\n");
+	}
+#endif
+
 #if TIME_TEST
 	std::chrono::time_point<std::chrono::system_clock> start, end;
     start = std::chrono::system_clock::now();
 #endif
     srand(time(NULL));
-	
+
     int count_set = 0;
     int count_intersection = 0;
 	Point temp_point;
+#if DATA_OUTPUT
 	double radius = 0;
-	
+#endif
+
 	vector<vector<Sector>> data;
 	data = ReadDataFromFile((char*)"data.test");
-	
+
 	for(vector<vector<Sector> >::iterator it = data.begin(); it != data.end(); ++it)
     {
 #if DATA_OUTPUT
@@ -47,9 +62,9 @@ int main()
         }
         else
         {
+#if DATA_OUTPUT
 			radius = 0;
             Point center_circle = CreateCircleFromArea(temp_point, *it, &radius);
-#if DATA_OUTPUT
 			printf("Center Circle -- (%lf ; %lf ),    Radius = %lf\n", center_circle.x, center_circle.y, radius);
 #endif
             count_intersection++;
@@ -58,18 +73,18 @@ int main()
 #if DATA_OUTPUT
         printf("\n\n");
 #endif
-		
+
 		count_set++;
     }
     printf("\n\nCount of Intersection === %i", count_intersection);
-	
+
 #if TIME_TEST
 	end = std::chrono::system_clock::now();
- 
+
     int elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds> (end-start).count();
     std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-	printf("\n\n\n\nTIME\t%i", elapsed_seconds);
+	printf("\n\n\n\nTIME\t%i\n\n", elapsed_seconds);
 #endif
-	
+
 	return 0;
 }
