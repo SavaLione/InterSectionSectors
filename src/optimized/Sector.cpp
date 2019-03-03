@@ -22,6 +22,23 @@ using namespace std;
 void PrintSetSectors(vector<Sector> vector_sectors)
 {
 #if DATA_OUTPUT
+    printf("Set of Sectors\n");
+#endif
+
+	for(vector<Sector>::iterator it = vector_sectors.begin(); it != vector_sectors.end(); ++it)
+    {
+#if DATA_OUTPUT
+		printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
+#endif
+    }
+#if DATA_OUTPUT
+	printf("______________________________________________________________________\n\n");
+#endif
+}
+/*
+void PrintSetSectors(vector<Sector> vector_sectors)
+{
+#if DATA_OUTPUT
     #pragma omp parallel
     {
         auto it = vector_sectors.begin();
@@ -32,24 +49,6 @@ void PrintSetSectors(vector<Sector> vector_sectors)
         }
     }
     printf("______________________________________________________________________\n\n");
-#endif
-}
-/*
-void PrintSetSectors(vector<Sector> vector_sectors)
-{
-#if DATA_OUTPUT
-    printf("Set of Sectors\n");
-#endif
-
-	#pragma omp for
-	for(vector<Sector>::iterator it = vector_sectors.begin(); it != vector_sectors.end(); ++it)
-    {
-#if DATA_OUTPUT
-		printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
-#endif
-    }
-#if DATA_OUTPUT
-	printf("______________________________________________________________________\n\n");
 #endif
 }
 */
@@ -91,21 +90,6 @@ Point CreateRandomPointInSector(Sector sect)
 
     return rez;
 }
-/*
-Point CreateRandomPointInSector(Sector sect)
-{
-    int radius = sect.min + rand()%(sect.max - sect.min);
-    double angle = (sect.azim + rand()% (2 * (int)sect.phi) - sect.phi);
-
-    Point rez;
-    rez.x = sect.x + radius * cos((90 - angle) * M_PI / 180);
-    rez.y = sect.y + radius * sin((90 - angle) * M_PI / 180);
-
-
-    return rez;
-}
-*/
-
 
 //Функция проверяет, принадлежит ли заданная точка списку секторов...
 bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
@@ -241,19 +225,6 @@ Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *r
 
     *radius = 0;
     double sum_radius = 0;
-
-    
-	/*
-    #pragma omp parallel
-    {
-        auto it = vector_sectors.begin();
-        #pragma openmp for
-        for(; it != vector_sectors.end(); ++it)
-        {
-            printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
-        }
-    }
-	*/
 	
 	#pragma omp parallel
 	{
@@ -264,18 +235,6 @@ Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *r
 			sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
 		}
 	}
-	/*
-	for(vector<Point>::iterator it = vector_point_border.begin(); it != vector_point_border.end(); ++it)
-    {
-        sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
-    }
-	*/
-	/*
-	for(vector<Point>::iterator it = vector_point_border.begin(); it != vector_point_border.end(); ++it)
-    {
-        sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
-    }
-	*/
 	
     *radius = sum_radius / count_point_border;
     return center_circle;
