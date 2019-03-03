@@ -1,7 +1,7 @@
 project(${ISS_OPTIMIZED_NAME})
 
 set(ISS_OPTIMIZED_HEADERS
-	ISS.h
+	rand_sse.h
 	ReadFile.h
 	Sector.h)
 
