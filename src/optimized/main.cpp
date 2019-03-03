@@ -1,4 +1,4 @@
-#define DATA_OUTPUT 1
+#define DATA_OUTPUT 0
 #define PARALLEL 1
 
 #ifdef __linux__
@@ -51,7 +51,6 @@ int main()
 		printf("Number set == %i\n", count_set);
         PrintSetSectors(*it);
 #endif
-        //Point temp_point;
         temp_point = CheckIntersectionSetOfSectors(*it);
 
         if (temp_point.x == 0 && temp_point.y == 0)
@@ -68,7 +67,6 @@ int main()
 			printf("Center Circle -- (%lf ; %lf ),    Radius = %lf\n", center_circle.x, center_circle.y, radius);
 #endif
             count_intersection++;
-
         }
 #if DATA_OUTPUT
         printf("\n\n");
@@ -83,7 +81,7 @@ int main()
 
     int elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds> (end-start).count();
     std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-	printf("\n\n\n\nTIME\t%i\n\n", elapsed_seconds);
+	printf("\n\n\n\nTIME\t%lf\n\n", elapsed_seconds);
 #endif
 
 	return 0;

@@ -1,11 +1,3 @@
-/*
-#ifdef __linux__
-#include <string.h>
-#elif _WIN32
-#define _USE_MATH_DEFINES
-#endif
-*/
-
 #ifdef _WIN32
 #define _USE_MATH_DEFINES
 #endif
@@ -190,8 +182,6 @@ Point CreateRandomPointToBorder(Point point, vector<Sector> vector_sectors)
 Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *radius)
 {
     int count_point_border = 100;
-    //int sum_x = 0;
-    //int sum_y = 0;
 	double sum_x = 0;
 	double sum_y = 0;
 
@@ -214,7 +204,7 @@ Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *r
 
     *radius = 0;
     double sum_radius = 0;
-	
+
 	#pragma omp parallel
 	{
 		auto it = vector_point_border.begin();
