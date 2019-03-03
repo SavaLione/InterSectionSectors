@@ -6,8 +6,6 @@
 #endif
 */
 
-#define DATA_OUTPUT 0
-
 #ifdef _WIN32
 #define _USE_MATH_DEFINES
 #endif
@@ -21,19 +19,12 @@ using namespace std;
 
 void PrintSetSectors(vector<Sector> vector_sectors)
 {
-#if DATA_OUTPUT
     printf("Set of Sectors\n");
-#endif
-
 	for(vector<Sector>::iterator it = vector_sectors.begin(); it != vector_sectors.end(); ++it)
     {
-#if DATA_OUTPUT
 		printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
-#endif
     }
-#if DATA_OUTPUT
 	printf("______________________________________________________________________\n\n");
-#endif
 }
 /*
 void PrintSetSectors(vector<Sector> vector_sectors)
@@ -107,9 +98,7 @@ bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
 
 void PrintSector(Sector sector)
 {
-#if DATA_OUTPUT
 	printf("Sector: (%i ; %i)\nAzimut - %lf     Phi = %lf\nDiapazon === [%i - %i]\n", sector.x, sector.y, sector.azim, sector.phi, sector.min, sector.max);
-#endif
 }
 
 //Функция проверяет, есть ли существование пересечения списка секторов

@@ -1,4 +1,4 @@
-#define DATA_OUTPUT 0
+#define DATA_OUTPUT 1
 #define PARALLEL 1
 
 #ifdef __linux__
@@ -49,8 +49,8 @@ int main()
     {
 #if DATA_OUTPUT
 		printf("Number set == %i\n", count_set);
-#endif
         PrintSetSectors(*it);
+#endif
         //Point temp_point;
         temp_point = CheckIntersectionSetOfSectors(*it);
 
