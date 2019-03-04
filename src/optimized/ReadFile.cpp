@@ -1,6 +1,4 @@
-#ifdef __linux__ 
-#include <string.h>
-#elif __MINGW32__
+#ifdef __GNUC__
 #include <string.h>
 #endif
 
