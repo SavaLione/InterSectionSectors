@@ -1,3 +1,2 @@
-```
-Тесты проводятся на VM 2x3.80GHz (intel)
-```
+Стек вызовов на [(ec322e0)](https://github.com/SavaLione/InterSectionSectors/tree/ec322e012eb2a001439e0f2e71987a4b90dc9b6f)
+
