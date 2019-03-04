@@ -6,6 +6,7 @@
 #include <math.h>
 
 #include "Sector.h"
+#include "rand_sse.h"
 
 using namespace std;
 
@@ -63,8 +64,15 @@ bool CheckPointToSector(Point point, Sector sector)
 //Создание случайной точки внутри заданного сектора...
 Point CreateRandomPointInSector(Sector sect)
 {
-    int radius = sect.min + rand()%(sect.max - sect.min);
-    double angle = (sect.azim + rand()% (2 * (int)sect.phi) - sect.phi);
+	unsigned int u_i_random[4];
+	rand_sse(u_i_random);
+
+    //int radius = sect.min + rand()%(sect.max - sect.min);
+    //double angle = (sect.azim + rand()% (2 * (int)sect.phi) - sect.phi);
+	int radius = sect.min + u_i_random[0]%(sect.max - sect.min);
+    double angle = (sect.azim + u_i_random[1]% (2 * (int)sect.phi) - sect.phi);
+	//int radius = 0;
+    //double angle = 0;
 
     Point rez;
     rez.x = sect.x + radius * cos((90 - angle) * M_PI / 180);
@@ -159,9 +167,13 @@ Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
 //пока не выйдет за пределы пересечения, эта точка и будет считаться границей...
 Point CreateRandomPointToBorder(Point point, vector<Sector> vector_sectors)
 {
+	unsigned int u_i_random[4];
+	rand_sse(u_i_random);
     int step = 5;
-    double angle = (rand() % 360 ) * M_PI / 180;
-
+    //double angle = (rand() % 360 ) * M_PI / 180;
+	double angle = (u_i_random[0] % 360 ) * M_PI / 180;
+	//double angle = 0;
+	
     Point current_point;
     current_point.x = point.x + step * cos(angle);
     current_point.y = point.y + step * sin(angle);

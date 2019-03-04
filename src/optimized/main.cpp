@@ -13,7 +13,9 @@
 
 #include <stdio.h>
 #include <time.h>
-#include <cstdlib>
+//#include <cstdlib>
+
+//#define COMPATABILITY
 
 #include "ReadFile.h"
 #include "Sector.h"
@@ -33,7 +35,8 @@ int main()
 	std::chrono::time_point<std::chrono::system_clock> start, end;
     start = std::chrono::system_clock::now();
 #endif
-    srand(time(NULL));
+    //srand(time(NULL));
+	//srand_sse(time(NULL)); // seed
 
     int count_set = 0;
     int count_intersection = 0;
