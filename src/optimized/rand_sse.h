@@ -41,7 +41,7 @@ cur_seed = _mm_set_epi32( seed, seed+1, seed, seed+1 );
 
 inline void rand_sse( unsigned int* result )
 {
-#ifdef __MINGW32__
+#if defined(__linux__) || defined(__MINGW32__)
 __m128i cur_seed_split;
 __m128i multiplier;
 __m128i adder;
