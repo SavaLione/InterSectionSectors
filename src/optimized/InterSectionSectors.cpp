@@ -2,7 +2,7 @@
 #define PARALLEL 1
 
 
-#if defined(__linux__) || defined(__MINGW32__)
+#ifdef __GNUC__
 #define TIME_TEST 1
 #endif
 
@@ -16,8 +16,10 @@
 
 #include <stdio.h>
 #include <time.h>
+
 #include "ReadFile.h"
 #include "Sector.h"
+#include "rand_sse.h"
 
 using namespace std;
 
@@ -34,7 +36,7 @@ int main()
 	std::chrono::time_point<std::chrono::system_clock> start, end;
     start = std::chrono::system_clock::now();
 #endif
-	//srand_sse(time(NULL)); // seed
+	srand_sse(time(NULL)); // seed
 
     int count_set = 0;
     int count_intersection = 0;

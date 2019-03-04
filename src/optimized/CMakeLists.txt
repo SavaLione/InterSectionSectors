@@ -7,6 +7,7 @@ set(ISS_OPTIMIZED_HEADERS
 
 set(ISS_OPTIMIZED_SOURCES
 	InterSectionSectors.cpp
+	rand_sse.cpp
 	ReadFile.cpp
 	Sector.cpp)
 
