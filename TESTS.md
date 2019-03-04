@@ -1,3 +1,6 @@
+
+#### Тесты проводятся на VM 2x3.80GHz (intel)
+
 ```
   1   original    gcc   188
   2   original    gcc   183
