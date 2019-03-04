@@ -13,7 +13,6 @@ set(ISS_ORIGINAL_NAME InterSectionSectors_Original)
 # Build
 ################################
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O2 -msse2 -fopenmp")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O2 -fopenmp -msse2 -msse3 -msse4.1 -mavx")
 
 ################################
 # 

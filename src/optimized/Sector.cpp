@@ -1,7 +1,3 @@
-#ifdef _WIN32
-#define _USE_MATH_DEFINES
-#endif
-
 #include <stdio.h>
 #include <math.h>
 
@@ -9,6 +5,8 @@
 #include "rand_sse.h"
 
 using namespace std;
+
+//srand_sse(time(NULL));
 
 void PrintSetSectors(vector<Sector> vector_sectors)
 {

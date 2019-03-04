@@ -6,7 +6,7 @@ set(ISS_OPTIMIZED_HEADERS
 	Sector.h)
 
 set(ISS_OPTIMIZED_SOURCES
-	main.cpp
+	InterSectionSectors.cpp
 	ReadFile.cpp
 	Sector.cpp)
 

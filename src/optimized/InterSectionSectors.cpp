@@ -1,10 +1,13 @@
 #define DATA_OUTPUT 0
 #define PARALLEL 1
 
-#ifdef __linux__
+
+#if defined(__linux__) || defined(__MINGW32__)
 #define TIME_TEST 1
-#elif __MINGW32__
-#define TIME_TEST 1
+#endif
+
+#ifdef _WIN32
+#define _USE_MATH_DEFINES
 #endif
 
 #if TIME_TEST
@@ -13,10 +16,6 @@
 
 #include <stdio.h>
 #include <time.h>
-//#include <cstdlib>
-
-//#define COMPATABILITY
-
 #include "ReadFile.h"
 #include "Sector.h"
 
@@ -35,7 +34,6 @@ int main()
 	std::chrono::time_point<std::chrono::system_clock> start, end;
     start = std::chrono::system_clock::now();
 #endif
-    //srand(time(NULL));
 	//srand_sse(time(NULL)); // seed
 
     int count_set = 0;
