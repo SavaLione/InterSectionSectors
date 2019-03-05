@@ -78,19 +78,34 @@ Point CreateRandomPointInSector(Sector sect)
     return rez;
 }
 
-
-/*
-    #pragma omp parallel
-    {
-        auto it = vector_sectors.begin();
-        #pragma openmp for
-        for(; it != vector_sectors.end(); ++it)
-        {
-            printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
-        }
-    }
-*/
 /* Функция проверяет, принадлежит ли заданная точка списку секторов... */
+bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
+{
+    bool flag = true;
+	for(auto it = vector_sector.begin(); it != vector_sector.end(); ++it)
+	{
+		if(!flag) continue;
+		if (!CheckPointToSector(point, *it)) flag = false;
+	}
+    return flag;
+}
+	
+	/*
+	#pragma omp parallel for
+	for(auto it = vector_sector.begin(); it != vector_sector.end(); ++it)
+	{
+		//if(!flag) continue;
+		if (flag)
+		{
+			if (!CheckPointToSector(point, *it)) 
+			{
+				#pragma omp atomic write
+				flag = false;
+			}
+		}
+	}
+	*/
+/*
 bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
 {
     bool flag = true;
@@ -101,6 +116,7 @@ bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
 	}
     return flag;
 }
+*/
 /*
 bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
 {
@@ -228,7 +244,26 @@ Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *r
 		
 		//auto it = vector_point_border.begin();
 		//vector<Point>::iterator it;
+
+		#pragma omp parallel
+		{
+			for(auto it = vector_point_border.begin(); it != vector_point_border.end(); ++it)
+			{
+				#pragma omp single nowait
+				{
+					sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
+				}
+			}
+		}
 		
+		/*
+		for(auto it = vector_point_border.begin(); it != vector_point_border.end(); ++it)
+		{
+			sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
+		}
+		*/
+		
+		/*
 		#pragma omp parallel reduction (+:sum_radius)
 		#pragma omp single
 		{
@@ -239,6 +274,7 @@ Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *r
 			}
 			#pragma omp taskwait
 		}
+		*/
 	//}
 	
     *radius = sum_radius / count_point_border;
