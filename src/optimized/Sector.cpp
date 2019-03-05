@@ -10,8 +10,6 @@
 
 using namespace std;
 
-//srand_sse(time(NULL));
-
 void PrintSetSectors(vector<Sector> vector_sectors)
 {
     printf("Set of Sectors\n");
@@ -96,17 +94,11 @@ Point CreateRandomPointInSector(Sector sect)
 bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
 {
     bool flag = true;
-	
-	//#pragma omp parallel
-    //{
-		auto it = vector_sector.begin();
-		#pragma openmp for shared(flag)
-		for(; it != vector_sector.end(); ++it)
-		{
-			if(!flag) continue;
-			if (!CheckPointToSector(point, *it)) flag = false;
-		}
-	//}
+	for(vector<Sector>::iterator it = vector_sector.begin(); it != vector_sector.end(); ++it)
+	{
+		if(!flag) continue;
+		if (!CheckPointToSector(point, *it)) flag = false;
+	}
     return flag;
 }
 /*
@@ -144,17 +136,19 @@ Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
     Sector init_sector = *it;
 
     ++it;
+	
     for( ; it != vector_sector.end(); ++it)
     {
         last_sector.push_back(*it);
     }
 	
-	#pragma openmp for
 	for (int i = 0; i < count_point; i++)
 	{
 		point = CreateRandomPointInSector(init_sector);
 		if (CheckPointToSetSectors(point, last_sector))
-            return point;
+		{
+			return point;
+		}
 	}
 	
     point.x = point.y = 0;
@@ -173,7 +167,6 @@ Point CreateRandomPointToBorder(Point point, vector<Sector> vector_sectors)
 	unsigned int u_i_random[4];
 	rand_sse(u_i_random);
     int step = 5;
-    //double angle = (rand() % 360 ) * M_PI / 180;
 	double angle = (u_i_random[0] % 360 ) * M_PI / 180;
 	
     Point current_point;
@@ -194,6 +187,52 @@ Point CreateRandomPointToBorder(Point point, vector<Sector> vector_sectors)
 	Кроме того, она считает и центр этой окружности,
 	который подается как параметр по ссылке
 */
+Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *radius)
+{
+    const int count_point_border = 100;
+	double sum_x = 0;
+	double sum_y = 0;
+
+    vector<Point> vector_point_border;
+	//Point current_point;
+
+	#pragma omp parallel  reduction (+:sum_x) reduction (+:sum_y)
+	{
+		#pragma omp for
+		for(int i = 0; i < count_point_border; i++)
+		{
+			//Point current_point = CreateRandomPointToBorder(point, vector_sectors);
+			Point current_point = CreateRandomPointToBorder(point, vector_sectors);
+			sum_x += current_point.x;
+			sum_y += current_point.y;
+		
+			#pragma omp critical
+			vector_point_border.push_back(current_point);
+
+		}
+	}
+	
+    Point center_circle;
+    center_circle.x = sum_x / count_point_border;
+    center_circle.y = sum_y / count_point_border;
+
+    *radius = 0;
+    double sum_radius = 0;
+
+	//#pragma omp parallel
+	//{
+		auto it = vector_point_border.begin();
+		//#pragma omp for
+		for(; it != vector_point_border.end(); ++it)
+		{
+			sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
+		}
+	//}
+	
+    *radius = sum_radius / count_point_border;
+    return center_circle;
+}
+/*
 Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *radius)
 {
     int count_point_border = 100;
@@ -220,16 +259,17 @@ Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *r
     *radius = 0;
     double sum_radius = 0;
 
-	#pragma omp parallel
-	{
+	//#pragma omp parallel
+	//{
 		auto it = vector_point_border.begin();
 		#pragma openmp for
 		for(; it != vector_point_border.end(); ++it)
 		{
 			sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
 		}
-	}
+	//}
 	
     *radius = sum_radius / count_point_border;
     return center_circle;
 }
+*/
