@@ -80,7 +80,36 @@ Point CreateRandomPointInSector(Sector sect)
     return rez;
 }
 
+
+/*
+    #pragma omp parallel
+    {
+        auto it = vector_sectors.begin();
+        #pragma openmp for
+        for(; it != vector_sectors.end(); ++it)
+        {
+            printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
+        }
+    }
+*/
 /* Функция проверяет, принадлежит ли заданная точка списку секторов... */
+bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
+{
+    bool flag = true;
+	
+	//#pragma omp parallel
+    //{
+		auto it = vector_sector.begin();
+		#pragma openmp for shared(flag)
+		for(; it != vector_sector.end(); ++it)
+		{
+			if(!flag) continue;
+			if (!CheckPointToSector(point, *it)) flag = false;
+		}
+	//}
+    return flag;
+}
+/*
 bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
 {
     bool flag = true;
@@ -93,6 +122,7 @@ bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
 
     return flag;
 }
+*/
 
 void PrintSector(Sector sector)
 {

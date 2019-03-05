@@ -27,6 +27,9 @@ int main()
 		printf("PARALLEL\n");
 	}
 #endif
+#ifdef _OPENMP
+	printf("Compiled by an OpenMP-compliant implementation.\n");
+#endif
 
 #if TIME_TEST
 	std::chrono::time_point<std::chrono::system_clock> start, end;
