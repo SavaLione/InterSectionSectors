@@ -202,7 +202,6 @@ Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *r
 		#pragma omp parallel for reduction (+:sum_x) reduction (+:sum_y)
 		for(int i = 0; i < count_point_border; i++)
 		{
-			//Point current_point = CreateRandomPointToBorder(point, vector_sectors);
 			Point current_point = CreateRandomPointToBorder(point, vector_sectors);
 			
 			#pragma omp atomic
@@ -224,13 +223,21 @@ Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *r
     *radius = 0;
     double sum_radius = 0;
 
-	//#pragma omp parallel
+	//#pragma omp parallel reduction (+:sum_radius)
 	//{
-		auto it = vector_point_border.begin();
-		//#pragma omp for
-		for(; it != vector_point_border.end(); ++it)
+		
+		//auto it = vector_point_border.begin();
+		//vector<Point>::iterator it;
+		
+		#pragma omp parallel reduction (+:sum_radius)
+		#pragma omp single
 		{
-			sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
+			for(auto it = vector_point_border.begin(); it != vector_point_border.end(); ++it)
+			{
+				#pragma omp task firstprivate(it)
+				sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
+			}
+			#pragma omp taskwait
 		}
 	//}
 	
