@@ -38,9 +38,7 @@ void PrintSector(Sector sector);
 void PrintSetSectors(std::vector<Sector> vector_sectors);
 Point CheckIntersectionSetOfSectors(std::vector<Sector> vector_sector);
 Point CreateCircleFromArea(Point point, std::vector<Sector> vector_sectors, double *radius);
-
-inline bool CheckPointToSetSectors(Point point, std::vector<Sector> vector_sector);
-
+bool CheckPointToSetSectors(Point point, std::vector<Sector> vector_sector);
 Point CreateRandomPointToBorder(Point point, std::vector<Sector> vector_sectors);
 
 #endif // SECTOR_H
