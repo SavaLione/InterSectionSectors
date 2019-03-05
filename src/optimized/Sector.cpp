@@ -59,18 +59,14 @@ bool CheckPointToSector(Point point, Sector sector)
     }
 }
 
-//Создание случайной точки внутри заданного сектора...
+/* Создание случайной точки внутри заданного сектора... */
 Point CreateRandomPointInSector(Sector sect)
 {
 	unsigned int u_i_random[4];
 	rand_sse(u_i_random);
 
-    //int radius = sect.min + rand()%(sect.max - sect.min);
-    //double angle = (sect.azim + rand()% (2 * (int)sect.phi) - sect.phi);
 	int radius = sect.min + u_i_random[0]%(sect.max - sect.min);
     double angle = (sect.azim + u_i_random[1]% (2 * (int)sect.phi) - sect.phi);
-	//int radius = 0;
-    //double angle = 0;
 
     Point rez;
     rez.x = sect.x + radius * cos((90 - angle) * M_PI / 180);
@@ -80,7 +76,7 @@ Point CreateRandomPointInSector(Sector sect)
     return rez;
 }
 
-//Функция проверяет, принадлежит ли заданная точка списку секторов...
+/* Функция проверяет, принадлежит ли заданная точка списку секторов... */
 bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
 {
     bool flag = true;
@@ -99,9 +95,11 @@ void PrintSector(Sector sector)
 	printf("Sector: (%i ; %i)\nAzimut - %lf     Phi = %lf\nDiapazon === [%i - %i]\n", sector.x, sector.y, sector.azim, sector.phi, sector.min, sector.max);
 }
 
-//Функция проверяет, есть ли существование пересечения списка секторов
-//Если пересечение есть, то возвращается точка из пересечения
-//если пеерсечения не обнаружено, то возвращается точка (0; 0)
+/* 
+	Функция проверяет, есть ли существование пересечения списка секторов
+	Если пересечение есть, то возвращается точка из пересечения
+	если пеерсечения не обнаружено, то возвращается точка (0; 0)
+*/
 Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
 {
     Point point;
@@ -158,11 +156,13 @@ Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
 }
 */
 
-//Функция создает случайную точку вблизи границы области пеерсечения секторов
-//Принимает в себя точку, которая должна лежать внтри этого пересечения
-//и список секторов, чье пересение рассмтариваем...
-//Функция порождает последовательнсоть случайных точек в случайном направлении от point
-//пока не выйдет за пределы пересечения, эта точка и будет считаться границей...
+/* 
+	Функция создает случайную точку вблизи границы области пеерсечения секторов
+	Принимает в себя точку, которая должна лежать внтри этого пересечения
+	и список секторов, чье пересение рассмтариваем...
+	Функция порождает последовательнсоть случайных точек в случайном направлении от point
+	пока не выйдет за пределы пересечения, эта точка и будет считаться границей...
+*/
 Point CreateRandomPointToBorder(Point point, vector<Sector> vector_sectors)
 {
 	unsigned int u_i_random[4];
@@ -170,7 +170,6 @@ Point CreateRandomPointToBorder(Point point, vector<Sector> vector_sectors)
     int step = 5;
     //double angle = (rand() % 360 ) * M_PI / 180;
 	double angle = (u_i_random[0] % 360 ) * M_PI / 180;
-	//double angle = 0;
 	
     Point current_point;
     current_point.x = point.x + step * cos(angle);
@@ -185,10 +184,11 @@ Point CreateRandomPointToBorder(Point point, vector<Sector> vector_sectors)
     return current_point;
 }
 
-//Функция находит центр коуржности, описывающей пересечения секторов...
-//Кроме того, она считает и центр этой окружности,
-//который подается как параметр по ссылке
-//
+/* 
+	Функция находит центр коуржности, описывающей пересечения секторов...
+	Кроме того, она считает и центр этой окружности,
+	который подается как параметр по ссылке
+*/
 Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *radius)
 {
     int count_point_border = 100;
