@@ -79,17 +79,36 @@ Point CreateRandomPointInSector(Sector sect)
 }
 
 /* Функция проверяет, принадлежит ли заданная точка списку секторов... */
-bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
+inline bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
 {
     bool flag = true;
 	for(auto it = vector_sector.begin(); it != vector_sector.end(); ++it)
 	{
-		if(!flag) continue;
-		if (!CheckPointToSector(point, *it)) flag = false;
+		if(flag)
+		{
+			if (!CheckPointToSector(point, *it))
+			{
+				flag = false;
+			}
+		}
 	}
     return flag;
 }
-	
+
+/*
+    bool flag = true;
+	for(auto it = vector_sector.begin(); it != vector_sector.end(); ++it)
+	{
+		if(flag)
+		{
+			if (!CheckPointToSector(point, *it))
+			{
+				flag = false;
+			}
+		}
+	}
+    return flag;
+*/
 	/*
 	#pragma omp parallel for
 	for(auto it = vector_sector.begin(); it != vector_sector.end(); ++it)
@@ -144,6 +163,124 @@ void PrintSector(Sector sector)
 */
 Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
 {
+    const int count_point = 1000;
+	Point point;
+	
+    vector<Sector> last_sector;
+    vector<Sector>::iterator it = vector_sector.begin();
+    Sector init_sector = *it;
+	bool flag = false;
+
+    ++it;
+	
+    for( ; it != vector_sector.end(); ++it)
+    {
+        last_sector.push_back(*it);
+    }
+	
+	double x = 0;
+	double y = 0;
+	
+	#pragma omp parallel for default(none) shared(x, y, flag, init_sector, last_sector) private(point)
+	for (int i = 0; i < count_point; i++)
+	{
+		if(!flag)
+		{
+			point = CreateRandomPointInSector(init_sector);
+			if (CheckPointToSetSectors(point, last_sector))
+			{
+				#pragma omp critical
+				{
+					#pragma omp atomic write
+					flag = true;
+					
+					#pragma omp atomic write
+					x = point.x;
+					
+					#pragma omp atomic write
+					y = point.y;
+					
+					//printf("ON\tX=%lf Y=%lf\n", point.x, point.y);
+				}
+				//#pragma omp cancel for
+			}
+		}
+		//#pragma omp cancellation point for
+	}
+	
+	if(!flag)
+	{
+		point.x = 0;
+		point.y = 0;
+	}
+	else
+	{
+		point.x = x;
+		point.y = y;
+		//printf(" +\tX=%lf Y=%lf\n", point.x, point.y);
+	}
+    return point;
+}
+/*
+Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
+{
+    const int count_point = 1000;
+	Point point;
+	
+    vector<Sector> last_sector;
+    vector<Sector>::iterator it = vector_sector.begin();
+    Sector init_sector = *it;
+	bool flag = false;
+
+    ++it;
+	
+    for( ; it != vector_sector.end(); ++it)
+    {
+        last_sector.push_back(*it);
+    }
+	
+	double x = 0;
+	double y = 0;
+	
+	#pragma omp parallel for default(none) shared(x, y, flag, init_sector, last_sector) private(point)
+	for (int i = 0; i < count_point; i++)
+	{
+		if(!flag)
+		{
+			point = CreateRandomPointInSector(init_sector);
+			if (CheckPointToSetSectors(point, last_sector))
+			{
+				#pragma omp critical
+				{
+					#pragma omp atomic write
+					flag = true;
+					
+					#pragma omp atomic write
+					x = point.x;
+					
+					#pragma omp atomic write
+					y = point.y;
+				}
+			}
+		}
+	}
+	
+	if(!flag)
+	{
+		point.x = 0;
+		point.y = 0;
+	}
+	else
+	{
+		point.x = x;
+		point.y = y;
+	}
+    return point;
+}
+*/
+/*
+Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
+{
     Point point;
     int count_point = 1000;
 
@@ -171,6 +308,7 @@ Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
     point.x = point.y = 0;
     return point;
 }
+*/
 
 /* 
 	Функция создает случайную точку вблизи границы области пеерсечения секторов
