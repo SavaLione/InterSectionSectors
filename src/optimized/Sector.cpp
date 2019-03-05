@@ -35,7 +35,7 @@ void PrintSetSectors(vector<Sector> vector_sectors)
 }
 */
 
-//Проверка, принадлежит ли точка сектору...
+/* Проверка, принадлежит ли точка сектору... */
 bool CheckPointToSector(Point point, Sector sector)
 {
     Point v1;
@@ -126,35 +126,6 @@ Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
     point.x = point.y = 0;
     return point;
 }
-/*
-Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
-{
-    Point point;
-    int count_point = 1000;
-
-    vector<Sector> last_sector;
-    vector<Sector>::iterator it = vector_sector.begin();
-    Sector init_sector = *it;
-
-    ++it;
-    for( ; it != vector_sector.end(); ++it)
-    {
-        last_sector.push_back(*it);
-    }
-
-    int i = 0;
-    while (i < count_point)
-    {
-        point = CreateRandomPointInSector(init_sector);
-
-        if (CheckPointToSetSectors(point, last_sector))
-            return point;
-        i++;
-    }
-    point.x = point.y = 0;
-    return point;
-}
-*/
 
 /* 
 	Функция создает случайную точку вблизи границы области пеерсечения секторов
