@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <math.h>
 
+#ifdef _WIN32
+#define _USE_MATH_DEFINES
+#endif
+
 #include "Sector.h"
 #include "rand_sse.h"
 

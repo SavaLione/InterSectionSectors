@@ -6,10 +6,6 @@
 #define TIME_TEST 1
 #endif
 
-#ifdef _WIN32
-#define _USE_MATH_DEFINES
-#endif
-
 #if TIME_TEST
 #include <chrono>
 #endif
