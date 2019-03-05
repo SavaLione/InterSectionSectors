@@ -142,6 +142,7 @@ Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
         last_sector.push_back(*it);
     }
 	
+	//#pragma omp for
 	for (int i = 0; i < count_point; i++)
 	{
 		point = CreateRandomPointInSector(init_sector);
@@ -196,21 +197,25 @@ Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *r
     vector<Point> vector_point_border;
 	//Point current_point;
 
-	#pragma omp parallel  reduction (+:sum_x) reduction (+:sum_y)
-	{
-		#pragma omp for
+	//#pragma omp parallel  reduction (+:sum_x) reduction (+:sum_y)
+	//{
+		#pragma omp parallel for reduction (+:sum_x) reduction (+:sum_y)
 		for(int i = 0; i < count_point_border; i++)
 		{
 			//Point current_point = CreateRandomPointToBorder(point, vector_sectors);
 			Point current_point = CreateRandomPointToBorder(point, vector_sectors);
+			
+			#pragma omp atomic
 			sum_x += current_point.x;
+			
+			#pragma omp atomic
 			sum_y += current_point.y;
 		
 			#pragma omp critical
 			vector_point_border.push_back(current_point);
 
 		}
-	}
+	//}
 	
     Point center_circle;
     center_circle.x = sum_x / count_point_border;
