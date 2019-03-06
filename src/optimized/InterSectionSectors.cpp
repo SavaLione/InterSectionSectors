@@ -12,14 +12,15 @@
 
 #include <stdio.h>
 #include <time.h>
+#include <iostream>
 
+#include "cxxopts.hpp"
 #include "ReadFile.h"
 #include "Sector.h"
 #include "rand_sse.h"
 
 using namespace std;
 
-/* DO NOT DELETE */
 int main()
 {
 #if PARALLEL
@@ -86,3 +87,4 @@ int main()
 #endif
 	return 0;
 }
+*/
