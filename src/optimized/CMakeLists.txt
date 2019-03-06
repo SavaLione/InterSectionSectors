@@ -1,7 +1,6 @@
 project(${ISS_OPTIMIZED_NAME})
 
 set(ISS_OPTIMIZED_HEADERS
-	cxxopts.hpp
 	rand_sse.h
 	ReadFile.h
 	Sector.h)
