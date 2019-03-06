@@ -80,11 +80,8 @@ int main()
 
 #if TIME_TEST
 	end = std::chrono::system_clock::now();
-
     int elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds> (end-start).count();
-    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
 	printf("\n\n\n\nTIME\t%i\n\n", elapsed_seconds);
 #endif
-
 	return 0;
 }

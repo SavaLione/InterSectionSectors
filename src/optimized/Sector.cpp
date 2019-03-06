@@ -26,34 +26,6 @@ void PrintSetSectors(vector<Sector> vector_sectors)
 	}
 	printf("______________________________________________________________________\n\n");
 }
-/*
-void PrintSetSectors(vector<Sector> vector_sectors)
-{
-    printf("Set of Sectors\n");
-	for(vector<Sector>::iterator it = vector_sectors.begin(); it != vector_sectors.end(); ++it)
-    {
-		printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
-    }
-	printf("______________________________________________________________________\n\n");
-}
-*/
-/*
-void PrintSetSectors(vector<Sector> vector_sectors)
-{
-#if DATA_OUTPUT
-    #pragma omp parallel
-    {
-        auto it = vector_sectors.begin();
-        #pragma openmp for
-        for(; it != vector_sectors.end(); ++it)
-        {
-            printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
-        }
-    }
-    printf("______________________________________________________________________\n\n");
-#endif
-}
-*/
 
 /* Проверка, принадлежит ли точка сектору... */
 bool CheckPointToSector(Point point, Sector sector)
@@ -112,62 +84,6 @@ bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
 	}
     return flag;
 }
-
-/*
-    bool flag = true;
-	for(auto it = vector_sector.begin(); it != vector_sector.end(); ++it)
-	{
-		if(flag)
-		{
-			if (!CheckPointToSector(point, *it))
-			{
-				flag = false;
-			}
-		}
-	}
-    return flag;
-*/
-	/*
-	#pragma omp parallel for
-	for(auto it = vector_sector.begin(); it != vector_sector.end(); ++it)
-	{
-		//if(!flag) continue;
-		if (flag)
-		{
-			if (!CheckPointToSector(point, *it)) 
-			{
-				#pragma omp atomic write
-				flag = false;
-			}
-		}
-	}
-	*/
-/*
-bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
-{
-    bool flag = true;
-	for(vector<Sector>::iterator it = vector_sector.begin(); it != vector_sector.end(); ++it)
-	{
-		if(!flag) continue;
-		if (!CheckPointToSector(point, *it)) flag = false;
-	}
-    return flag;
-}
-*/
-/*
-bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
-{
-    bool flag = true;
-
-    for(vector<Sector>::iterator it = vector_sector.begin(); it != vector_sector.end(); ++it)
-    {
-        if (!CheckPointToSector(point, *it))
-            flag = false;
-    }
-
-    return flag;
-}
-*/
 
 void PrintSector(Sector sector)
 {
@@ -274,26 +190,22 @@ Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *r
 	double sum_y = 0;
 
     vector<Point> vector_point_border;
-	//Point current_point;
 
-	//#pragma omp parallel  reduction (+:sum_x) reduction (+:sum_y)
-	//{
-		#pragma omp parallel for reduction (+:sum_x) reduction (+:sum_y)
-		for(int i = 0; i < count_point_border; i++)
-		{
-			Point current_point = CreateRandomPointToBorder(point, vector_sectors);
+	#pragma omp parallel for reduction (+:sum_x) reduction (+:sum_y)
+	for(int i = 0; i < count_point_border; i++)
+	{
+		Point current_point = CreateRandomPointToBorder(point, vector_sectors);
 			
-			#pragma omp atomic
-			sum_x += current_point.x;
+		#pragma omp atomic
+		sum_x += current_point.x;
 			
-			#pragma omp atomic
-			sum_y += current_point.y;
+		#pragma omp atomic
+		sum_y += current_point.y;
 		
-			#pragma omp critical
-			vector_point_border.push_back(current_point);
+		#pragma omp critical
+		vector_point_border.push_back(current_point);
 
-		}
-	//}
+	}
 	
     Point center_circle;
     center_circle.x = sum_x / count_point_border;
@@ -302,85 +214,17 @@ Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *r
     *radius = 0;
     double sum_radius = 0;
 
-	//#pragma omp parallel reduction (+:sum_radius)
-	//{
-		
-		//auto it = vector_point_border.begin();
-		//vector<Point>::iterator it;
-
-		#pragma omp parallel
-		{
-			for(auto it = vector_point_border.begin(); it != vector_point_border.end(); ++it)
-			{
-				#pragma omp single nowait
-				{
-					sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
-				}
-			}
-		}
-		
-		/*
+	#pragma omp parallel
+	{
 		for(auto it = vector_point_border.begin(); it != vector_point_border.end(); ++it)
 		{
-			sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
-		}
-		*/
-		
-		/*
-		#pragma omp parallel reduction (+:sum_radius)
-		#pragma omp single
-		{
-			for(auto it = vector_point_border.begin(); it != vector_point_border.end(); ++it)
+			#pragma omp single nowait
 			{
-				#pragma omp task firstprivate(it)
 				sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
 			}
-			#pragma omp taskwait
 		}
-		*/
-	//}
+	}
 	
     *radius = sum_radius / count_point_border;
     return center_circle;
 }
-/*
-Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *radius)
-{
-    int count_point_border = 100;
-	double sum_x = 0;
-	double sum_y = 0;
-
-    vector<Point> vector_point_border;
-	Point current_point;
-
-    for(int i = 0; i < count_point_border; i++)
-    {
-        //Point current_point = CreateRandomPointToBorder(point, vector_sectors);
-		current_point = CreateRandomPointToBorder(point, vector_sectors);
-        sum_x = sum_x + current_point.x;
-        sum_y = sum_y + current_point.y;
-        vector_point_border.push_back(current_point);
-
-    }
-
-    Point center_circle;
-    center_circle.x = sum_x / count_point_border;
-    center_circle.y = sum_y / count_point_border;
-
-    *radius = 0;
-    double sum_radius = 0;
-
-	//#pragma omp parallel
-	//{
-		auto it = vector_point_border.begin();
-		#pragma openmp for
-		for(; it != vector_point_border.end(); ++it)
-		{
-			sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
-		}
-	//}
-	
-    *radius = sum_radius / count_point_border;
-    return center_circle;
-}
-*/
