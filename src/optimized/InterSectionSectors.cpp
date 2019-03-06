@@ -19,6 +19,7 @@
 
 using namespace std;
 
+/* DO NOT DELETE */
 int main()
 {
 #if PARALLEL
