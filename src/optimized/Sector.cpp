@@ -5,7 +5,6 @@
 #define _USE_MATH_DEFINES
 #endif
 
-#include "cxxopts.hpp"
 #include "Sector.h"
 #include "rand_sse.h"
 
@@ -98,15 +97,9 @@ void PrintSector(Sector sector)
 */
 Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
 {
-	int count_point = 1000;
-	
-	if(result.count("accuracy"))
-	{
-		count_point = result["accuracy"].as<int>();
-	}
-	
 	Point point;
 	
+	const int count_point = 1000;
     vector<Sector> last_sector;
     vector<Sector>::iterator it = vector_sector.begin();
     Sector init_sector = *it;
