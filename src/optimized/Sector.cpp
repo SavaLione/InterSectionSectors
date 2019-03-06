@@ -13,12 +13,30 @@ using namespace std;
 void PrintSetSectors(vector<Sector> vector_sectors)
 {
     printf("Set of Sectors\n");
+	
+	#pragma omp parallel
+	{
+		for(auto it = vector_sectors.begin(); it != vector_sectors.end(); ++it)
+		{
+			#pragma omp single nowait
+			{
+				printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
+			}
+		}
+	}
+	printf("______________________________________________________________________\n\n");
+}
+/*
+void PrintSetSectors(vector<Sector> vector_sectors)
+{
+    printf("Set of Sectors\n");
 	for(vector<Sector>::iterator it = vector_sectors.begin(); it != vector_sectors.end(); ++it)
     {
 		printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
     }
 	printf("______________________________________________________________________\n\n");
 }
+*/
 /*
 void PrintSetSectors(vector<Sector> vector_sectors)
 {
