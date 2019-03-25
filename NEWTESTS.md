@@ -10,15 +10,15 @@ gcc version 8.1.0 (x86_64-posix-seh-rev0, Built by MinGW-W64 project)
 
 ```
 
-50 тысяч строк входных данных
+50 тысяч строк входных данных без вывода в консоль
 |Optimized|Original with time test|
 |---------|-----------------------|
 |Time:   6|Time:                66|
 
-500 тысяч строк входных данных
+500 тысяч строк входных данных без вывода в консоль
 |Optimized|Original with time test|
 |---------|-----------------------|
-|Time:  55|Time:                 -|
+|Time:  55|Time:               616|
 
 #### Optimized
 |                    |Time |

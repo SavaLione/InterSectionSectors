@@ -60,13 +60,13 @@ int main()
 		Выводим текст в консоль каждым потоком
 		Нужно для проверки количества задействованных потоков
 	*/
+	printf("Cores: ");
 	#pragma omp parallel
 	{
-		printf("PARALLEL\n");
+		printf("[CORE] ");
 	}
-#endif
+	printf("\n");
 
-#if PARALLEL
 	/*
 		Вывод данных о возможности использования OpenMP 
 	*/
@@ -101,13 +101,20 @@ int main()
 	vector<vector<Sector>> data;
 	data = ReadDataFromFile((char*)"data.test");
 
-	for(vector<vector<Sector> >::iterator it = data.begin(); it != data.end(); ++it)
+	int i_size = 0;
+	for(auto it = data.begin(); it != data.end(); ++it)
+		++i_size;
+
+	
+	// #pragma omp parallel for
+	for(int i = 0; i < i_size; ++i)
     {
 #if DATA_OUTPUT
 		printf("Number set == %i\n", count_set);
-        PrintSetSectors(&(*it));
+        PrintSetSectors(&data[i]);
 #endif
-        temp_point = CheckIntersectionSetOfSectors(&(*it));
+        // temp_point = CheckIntersectionSetOfSectors(&(*it));
+		temp_point = CheckIntersectionSetOfSectors(&data[i]);
 
         if (temp_point.x == 0 && temp_point.y == 0)
         {
@@ -119,7 +126,7 @@ int main()
         {
 #if DATA_OUTPUT
 			radius = 0;
-            Point center_circle = CreateCircleFromArea(&temp_point, &(*it), &radius);
+            Point center_circle = CreateCircleFromArea(&temp_point, &data[i], &radius);
 			printf("Center Circle -- (%lf ; %lf ),    Radius = %lf\n", center_circle.x, center_circle.y, radius);
 #endif
             count_intersection++;
