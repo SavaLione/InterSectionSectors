@@ -20,7 +20,7 @@ gcc version 8.1.0 (x86_64-posix-seh-rev0, Built by MinGW-W64 project)
 |-|---------|-----------------------|
 |optimized|Time:  55|Time:               616|
 |optimized|Time:  50|Time:                 -|
-|opt. without out (1)|Time:  36|Time:                 -|
+|opt. without out (1)|Time:  36|Time:      -|
 
     1 - openMP main func
 

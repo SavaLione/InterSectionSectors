@@ -196,15 +196,14 @@ Point CreateCircleFromArea(Point *point, vector<Sector> *vector_sectors, double 
     *radius = 0;
     double sum_radius = 0;
 
-	#pragma omp parallel
+	int i_size = 0;
+	for(auto it = vector_point_border.begin(); it != vector_point_border.end(); ++it)
+		++i_size;
+
+	#pragma omp parallel for reduction (+:sum_radius)
+	for(int i = 0; i < i_size; ++i)
 	{
-		for(auto it = vector_point_border.begin(); it != vector_point_border.end(); ++it)
-		{
-			#pragma omp single nowait
-			{
-				sum_radius += sqrt(pow((*it).x - center_circle.x, 2.0) + pow((*it).y - center_circle.y, 2.0));
-			}
-		}
+		sum_radius += sqrt(pow(vector_point_border[i].x - center_circle.x, 2.0) + pow(vector_point_border[i].y - center_circle.y, 2.0));
 	}
 	
     *radius = sum_radius / count_point_border;
