@@ -17,7 +17,6 @@ void PrintSetSectors(vector<Sector> *vector_sectors)
 	
 	/*
 		Деректива OpenMP
-		
 	*/
 	#pragma omp parallel
 	{
@@ -78,23 +77,6 @@ Point CreateRandomPointInSector(Sector *sect)
 }
 
 /* Функция проверяет, принадлежит ли заданная точка списку секторов... */
-/*
-bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
-{
-    bool flag = true;
-	for(auto it = vector_sector.begin(); it != vector_sector.end(); ++it)
-	{
-		if(flag)
-		{
-			if (!CheckPointToSector(point, *it))
-			{
-				flag = false;
-			}
-		}
-	}
-    return flag;
-}
-*/
 bool CheckPointToSetSectors(Point *point, vector<Sector> *vector_sector)
 {
     bool flag = true;
@@ -110,13 +92,6 @@ bool CheckPointToSetSectors(Point *point, vector<Sector> *vector_sector)
 	}
     return flag;
 }
-
-/*
-void PrintSector(Sector sector)
-{
-	printf("Sector: (%i ; %i)\nAzimut - %lf     Phi = %lf\nDiapazon === [%i - %i]\n", sector.x, sector.y, sector.azim, sector.phi, sector.min, sector.max);
-}
-*/
 
 /* 
 	Функция проверяет, есть ли существование пересечения списка секторов
@@ -205,72 +180,7 @@ Point CreateRandomPointToBorder(Point *point, vector<Sector> *vector_sectors)
 
     return current_point;
 }
-/*
-Point CreateRandomPointToBorder(Point point, vector<Sector> vector_sectors)
-{
-	unsigned int u_i_random[4];
-	rand_sse(u_i_random);
-    int step = 5;
-	double angle[3] = { (u_i_random[0] % 360 ) * M_PI / 180 };
-	angle[1] = cos(angle[0]);
-	angle[2] = sin(angle[0]);
 
-    Point current_point;
-    current_point.x = point.x + step * angle[1];
-    current_point.y = point.y + step * angle[2];
-
-    while (CheckPointToSetSectors(current_point, vector_sectors))
-    {
-        current_point.x = current_point.x + step * angle[1];
-        current_point.y = current_point.y + step * angle[2];
-    }
-
-    return current_point;
-}
-*/
-/*
-Point CreateRandomPointToBorder(Point point, vector<Sector> vector_sectors)
-{
-	unsigned int u_i_random[4];
-	rand_sse(u_i_random);
-    int step = 5;
-	double angle = (u_i_random[0] % 360 ) * M_PI / 180;
-	
-    Point current_point;
-    current_point.x = point.x + step * cos(angle);
-    current_point.y = point.y + step * sin(angle);
-
-    while (CheckPointToSetSectors(current_point, vector_sectors))
-    {
-        current_point.x = current_point.x + step * cos(angle);
-        current_point.y = current_point.y + step * sin(angle);
-    }
-
-    return current_point;
-}
-*/
-/*
-Point CreateRandomPointToBorder(Point point, vector<Sector> vector_sectors)
-{
-	unsigned int u_i_random[4];
-	rand_sse(u_i_random);
-    int step = 5;
-	double angle_cos = cos((u_i_random[0] % 360 ) * M_PI / 180);
-	double angle_sin = sqrt(1 - angle_cos * angle_cos);
-
-    Point current_point;
-    current_point.x = point.x + step * angle_cos;
-    current_point.y = point.y + step * angle_sin;
-
-    while (CheckPointToSetSectors(current_point, vector_sectors))
-    {
-        current_point.x = current_point.x + step * angle_cos;
-        current_point.y = current_point.y + step * angle_sin;
-    }
-
-    return current_point;
-}
-*/
 
 /* 
 	Функция находит центр коуржности, описывающей пересечения секторов...

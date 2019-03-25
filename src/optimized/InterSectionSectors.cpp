@@ -105,7 +105,7 @@ int main()
     {
 #if DATA_OUTPUT
 		printf("Number set == %i\n", count_set);
-        PrintSetSectors(*it);
+        PrintSetSectors(&(*it));
 #endif
         temp_point = CheckIntersectionSetOfSectors(&(*it));
 
@@ -119,7 +119,7 @@ int main()
         {
 #if DATA_OUTPUT
 			radius = 0;
-            Point center_circle = CreateCircleFromArea(temp_point, *it, &radius);
+            Point center_circle = CreateCircleFromArea(&temp_point, &(*it), &radius);
 			printf("Center Circle -- (%lf ; %lf ),    Radius = %lf\n", center_circle.x, center_circle.y, radius);
 #endif
             count_intersection++;
