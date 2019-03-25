@@ -1,0 +1,14 @@
+project(${ISS_ORIGINAL_WITHOUT_OUT_NAME})
+
+set(ISS_ORIGINAL_WITHOUT_OUT_HEADERS
+	rand_sse.h
+	ReadFile.h
+	Sector.h)
+
+set(ISS_ORIGINAL_WITHOUT_OUT_SOURCES
+	InterSectionSectors.cpp
+	rand_sse.cpp
+	ReadFile.cpp
+	Sector.cpp)
+
+add_executable(${ISS_ORIGINAL_WITHOUT_OUT_NAME} ${ISS_ORIGINAL_WITHOUT_OUT_HEADERS} ${ISS_ORIGINAL_WITHOUT_OUT_SOURCES})
