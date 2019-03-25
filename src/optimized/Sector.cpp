@@ -11,7 +11,7 @@
 using namespace std;
 
 /* Вывод секторов в консоль */
-void PrintSetSectors(vector<Sector> vector_sectors)
+void PrintSetSectors(vector<Sector> *vector_sectors)
 {
     printf("Set of Sectors\n");
 	
@@ -21,7 +21,7 @@ void PrintSetSectors(vector<Sector> vector_sectors)
 	*/
 	#pragma omp parallel
 	{
-		for(auto it = vector_sectors.begin(); it != vector_sectors.end(); ++it)
+		for(auto it = vector_sectors->begin(); it != vector_sectors->end(); ++it)
 		{
 			#pragma omp single nowait
 			{
@@ -33,37 +33,24 @@ void PrintSetSectors(vector<Sector> vector_sectors)
 }
 
 /* Проверка, принадлежит ли точка сектору... */
-bool CheckPointToSector(Point point, Sector sector)
+bool CheckPointToSector(Point *point, Sector *sector)
 {
     Point v1;
-    v1.x = point.x - sector.x;
-    v1.y = point.y - sector.y;
+    v1.x = point->x - sector->x;
+    v1.y = point->y - sector->y;
 
     double temp_x, temp_y;
-    temp_x = cos((90 - sector.azim) * M_PI / 180);
-    temp_y = sin((90 - sector.azim) * M_PI / 180);
+    temp_x = cos((90 - sector->azim) * M_PI / 180);
+    temp_y = sin((90 - sector->azim) * M_PI / 180);
 
     double r = sqrt((pow(v1.x, 2.0) + pow(v1.y, 2.0)));
     double angle = acos((v1.x * temp_x + v1.y * temp_y) / r) * 180 / M_PI;
 
 	/*
-    if ((r >= sector.min && r <= sector.max) && (angle >= -sector.phi && angle <= sector.phi))
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-	*/
-
-	/* if ((r >= sector.min && r <= sector.max) && (angle >= -sector.phi && angle <= sector.phi)) */
-
-	/*
 		(angle >= -sector.phi && angle <= sector.phi) попадается чаще, чем (r >= sector.min && r <= sector.max)
 		Примерно 26/11
 	*/
-    if ((angle >= -sector.phi && angle <= sector.phi) && (r >= sector.min && r <= sector.max))
+    if ((angle >= -sector->phi && angle <= sector->phi) && (r >= sector->min && r <= sector->max))
     {
         return true;
     }
@@ -74,23 +61,24 @@ bool CheckPointToSector(Point point, Sector sector)
 }
 
 /* Создание случайной точки внутри заданного сектора... */
-Point CreateRandomPointInSector(Sector sect)
+Point CreateRandomPointInSector(Sector *sect)
 {
 	unsigned int u_i_random[4];
 	rand_sse(u_i_random);
 
-	int radius = sect.min + u_i_random[0]%(sect.max - sect.min);
-    double angle = (sect.azim + u_i_random[1]% (2 * (int)sect.phi) - sect.phi);
+	int radius = sect->min + u_i_random[0]%(sect->max - sect->min);
+    double angle = (sect->azim + u_i_random[1]% (2 * (int)sect->phi) - sect->phi);
 
     Point rez;
-    rez.x = sect.x + radius * cos((90 - angle) * M_PI / 180);
-    rez.y = sect.y + radius * sin((90 - angle) * M_PI / 180);
+    rez.x = sect->x + radius * cos((90 - angle) * M_PI / 180);
+    rez.y = sect->y + radius * sin((90 - angle) * M_PI / 180);
 
 
     return rez;
 }
 
 /* Функция проверяет, принадлежит ли заданная точка списку секторов... */
+/*
 bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
 {
     bool flag = true;
@@ -99,6 +87,22 @@ bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
 		if(flag)
 		{
 			if (!CheckPointToSector(point, *it))
+			{
+				flag = false;
+			}
+		}
+	}
+    return flag;
+}
+*/
+bool CheckPointToSetSectors(Point *point, vector<Sector> *vector_sector)
+{
+    bool flag = true;
+	for(auto it = vector_sector->begin(); it != vector_sector->end(); ++it)
+	{
+		if(flag)
+		{
+			if (!CheckPointToSector(point, &(*it)))
 			{
 				flag = false;
 			}
@@ -119,19 +123,19 @@ void PrintSector(Sector sector)
 	Если пересечение есть, то возвращается точка из пересечения
 	если пеерсечения не обнаружено, то возвращается точка (0; 0)
 */
-Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
+Point CheckIntersectionSetOfSectors(vector<Sector> *vector_sector)
 {
 	Point point;
 	
 	const int count_point = 1000;
     vector<Sector> last_sector;
-    vector<Sector>::iterator it = vector_sector.begin();
+    vector<Sector>::iterator it = vector_sector->begin();
     Sector init_sector = *it;
 	bool flag = false;
 
     ++it;
 	
-    for( ; it != vector_sector.end(); ++it)
+    for( ; it != vector_sector->end(); ++it)
     {
         last_sector.push_back(*it);
     }
@@ -144,8 +148,8 @@ Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
 	{
 		if(!flag)
 		{
-			point = CreateRandomPointInSector(init_sector);
-			if (CheckPointToSetSectors(point, last_sector))
+			point = CreateRandomPointInSector(&init_sector);
+			if (CheckPointToSetSectors(&point, &last_sector))
 			{
 				#pragma omp critical
 				{
@@ -182,6 +186,49 @@ Point CheckIntersectionSetOfSectors(vector<Sector> vector_sector)
 	Функция порождает последовательнсоть случайных точек в случайном направлении от point
 	пока не выйдет за пределы пересечения, эта точка и будет считаться границей...
 */
+Point CreateRandomPointToBorder(Point *point, vector<Sector> *vector_sectors)
+{
+	unsigned int u_i_random[4];
+	rand_sse(u_i_random);
+    int step = 5;
+	double angle = (u_i_random[0] % 360 ) * M_PI / 180;
+	
+    Point current_point;
+    current_point.x = point->x + step * cos(angle);
+    current_point.y = point->y + step * sin(angle);
+
+    while (CheckPointToSetSectors(&current_point, vector_sectors))
+    {
+        current_point.x = current_point.x + step * cos(angle);
+        current_point.y = current_point.y + step * sin(angle);
+    }
+
+    return current_point;
+}
+/*
+Point CreateRandomPointToBorder(Point point, vector<Sector> vector_sectors)
+{
+	unsigned int u_i_random[4];
+	rand_sse(u_i_random);
+    int step = 5;
+	double angle[3] = { (u_i_random[0] % 360 ) * M_PI / 180 };
+	angle[1] = cos(angle[0]);
+	angle[2] = sin(angle[0]);
+
+    Point current_point;
+    current_point.x = point.x + step * angle[1];
+    current_point.y = point.y + step * angle[2];
+
+    while (CheckPointToSetSectors(current_point, vector_sectors))
+    {
+        current_point.x = current_point.x + step * angle[1];
+        current_point.y = current_point.y + step * angle[2];
+    }
+
+    return current_point;
+}
+*/
+/*
 Point CreateRandomPointToBorder(Point point, vector<Sector> vector_sectors)
 {
 	unsigned int u_i_random[4];
@@ -201,13 +248,36 @@ Point CreateRandomPointToBorder(Point point, vector<Sector> vector_sectors)
 
     return current_point;
 }
+*/
+/*
+Point CreateRandomPointToBorder(Point point, vector<Sector> vector_sectors)
+{
+	unsigned int u_i_random[4];
+	rand_sse(u_i_random);
+    int step = 5;
+	double angle_cos = cos((u_i_random[0] % 360 ) * M_PI / 180);
+	double angle_sin = sqrt(1 - angle_cos * angle_cos);
+
+    Point current_point;
+    current_point.x = point.x + step * angle_cos;
+    current_point.y = point.y + step * angle_sin;
+
+    while (CheckPointToSetSectors(current_point, vector_sectors))
+    {
+        current_point.x = current_point.x + step * angle_cos;
+        current_point.y = current_point.y + step * angle_sin;
+    }
+
+    return current_point;
+}
+*/
 
 /* 
 	Функция находит центр коуржности, описывающей пересечения секторов...
 	Кроме того, она считает и центр этой окружности,
 	который подается как параметр по ссылке
 */
-Point CreateCircleFromArea(Point point, vector<Sector> vector_sectors, double *radius)
+Point CreateCircleFromArea(Point *point, vector<Sector> *vector_sectors, double *radius)
 {
     const int count_point_border = 100;
 	double sum_x = 0;

@@ -107,7 +107,7 @@ int main()
 		printf("Number set == %i\n", count_set);
         PrintSetSectors(*it);
 #endif
-        temp_point = CheckIntersectionSetOfSectors(*it);
+        temp_point = CheckIntersectionSetOfSectors(&(*it));
 
         if (temp_point.x == 0 && temp_point.y == 0)
         {

@@ -18,10 +18,10 @@ struct Sector
     /* Угол обзора сектора */
     double phi;
 	
-    /* Минимально ерасстояние от центра */
+    /* Минимальное расстояние от центра */
     int min;
 	
-    /* максимально возможно расстояние от центра */
+    /* Максимально возможно расстояние от центра */
     int max;
 };
 
@@ -33,16 +33,22 @@ struct Point
 };
 
 /* Вывод секторов в консоль */
-void PrintSetSectors(std::vector<Sector> vector_sectors);
+/* void PrintSetSectors(std::vector<Sector> vector_sectors); */
+void PrintSetSectors(std::vector<Sector> *vector_sectors);
+
 
 /* Проверка, принадлежит ли точка сектору... */
-bool CheckPointToSector(Point point, Sector sector);
+/* bool CheckPointToSector(Point point, Sector sector); */
+bool CheckPointToSector(Point *point, Sector *sector);
 
 /* Создание случайной точки внутри заданного сектора... */
-Point CreateRandomPointInSector(Sector sect);
+/* Point CreateRandomPointInSector(Sector sect); */
+Point CreateRandomPointInSector(Sector *sect);
+
 
 /* Функция проверяет, принадлежит ли заданная точка списку секторов... */
-bool CheckPointToSetSectors(Point point, std::vector<Sector> vector_sector);
+/* bool CheckPointToSetSectors(Point point, std::vector<Sector> vector_sector); */
+bool CheckPointToSetSectors(Point *point, std::vector<Sector> *vector_sector);
 
 /*
 void PrintSector(Sector sector);
@@ -53,7 +59,8 @@ void PrintSector(Sector sector);
 	Если пересечение есть, то возвращается точка из пересечения
 	если пеерсечения не обнаружено, то возвращается точка (0; 0)
 */
-Point CheckIntersectionSetOfSectors(std::vector<Sector> vector_sector);
+/* Point CheckIntersectionSetOfSectors(std::vector<Sector> vector_sector); */
+Point CheckIntersectionSetOfSectors(std::vector<Sector> *vector_sector);
 
 /* 
 	Функция создает случайную точку вблизи границы области пеерсечения секторов
@@ -62,13 +69,15 @@ Point CheckIntersectionSetOfSectors(std::vector<Sector> vector_sector);
 	Функция порождает последовательнсоть случайных точек в случайном направлении от point
 	пока не выйдет за пределы пересечения, эта точка и будет считаться границей...
 */
-Point CreateRandomPointToBorder(Point point, std::vector<Sector> vector_sectors);
+/* Point CreateRandomPointToBorder(Point point, std::vector<Sector> vector_sectors); */
+Point CreateRandomPointToBorder(Point *point, std::vector<Sector> *vector_sectors);
 
 /* 
 	Функция находит центр коуржности, описывающей пересечения секторов...
 	Кроме того, она считает и центр этой окружности,
 	который подается как параметр по ссылке
 */
-Point CreateCircleFromArea(Point point, std::vector<Sector> vector_sectors, double *radius);
+/* Point CreateCircleFromArea(Point point, std::vector<Sector> vector_sectors, double *radius); */
+Point CreateCircleFromArea(Point *point, std::vector<Sector> *vector_sectors, double *radius);
 
 #endif // SECTOR_H
