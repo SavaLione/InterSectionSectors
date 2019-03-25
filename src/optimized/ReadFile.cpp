@@ -1,18 +1,25 @@
+
+/* Для GNUC компилятора необходимо подключить библиотеку string */
 #ifdef __GNUC__
 #include <string.h>
 #endif
 
+/*
+	Подключение библиотек
+*/
 #include <fstream>
 #include <stdlib.h>
 
+/*
+	Заменили list на vector
+*/
 #include <vector>
 
 #include "ReadFile.h"
 
 using namespace std;
 
-//Чтение данных из файла...
-//
+/* Чтение данных из файла... */
 vector<vector<Sector>> ReadDataFromFile(char* file)
 {
 	vector<vector<Sector>> data;

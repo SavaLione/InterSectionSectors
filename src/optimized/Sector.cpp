@@ -10,10 +10,15 @@
 
 using namespace std;
 
+/* Вывод секторов в консоль */
 void PrintSetSectors(vector<Sector> vector_sectors)
 {
     printf("Set of Sectors\n");
 	
+	/*
+		Деректива OpenMP
+		
+	*/
 	#pragma omp parallel
 	{
 		for(auto it = vector_sectors.begin(); it != vector_sectors.end(); ++it)
@@ -41,7 +46,24 @@ bool CheckPointToSector(Point point, Sector sector)
     double r = sqrt((pow(v1.x, 2.0) + pow(v1.y, 2.0)));
     double angle = acos((v1.x * temp_x + v1.y * temp_y) / r) * 180 / M_PI;
 
+	/*
     if ((r >= sector.min && r <= sector.max) && (angle >= -sector.phi && angle <= sector.phi))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+	*/
+
+	/* if ((r >= sector.min && r <= sector.max) && (angle >= -sector.phi && angle <= sector.phi)) */
+
+	/*
+		(angle >= -sector.phi && angle <= sector.phi) попадается чаще, чем (r >= sector.min && r <= sector.max)
+		Примерно 26/11
+	*/
+    if ((angle >= -sector.phi && angle <= sector.phi) && (r >= sector.min && r <= sector.max))
     {
         return true;
     }
@@ -85,10 +107,12 @@ bool CheckPointToSetSectors(Point point, vector<Sector> vector_sector)
     return flag;
 }
 
+/*
 void PrintSector(Sector sector)
 {
 	printf("Sector: (%i ; %i)\nAzimut - %lf     Phi = %lf\nDiapazon === [%i - %i]\n", sector.x, sector.y, sector.azim, sector.phi, sector.min, sector.max);
 }
+*/
 
 /* 
 	Функция проверяет, есть ли существование пересечения списка секторов
