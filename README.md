@@ -1,5 +1,41 @@
-Стек вызовов на [(ec322e0)](https://github.com/SavaLione/InterSectionSectors/tree/ec322e012eb2a001439e0f2e71987a4b90dc9b6f)
-<img src="res/Stack_ec322e0.svg" style="width: 300px; height: 300px;">
+```
+  _____       _            _____           _   _              _____           _                 
+ |_   _|     | |          / ____|         | | (_)            / ____|         | |                
+   | |  _ __ | |_ ___ _ _| (___   ___  ___| |_ _  ___  _ __ | (___   ___  ___| |_ ___  _ __ ___ 
+   | | | '_ \| __/ _ \ '__\___ \ / _ \/ __| __| |/ _ \| '_ \ \___ \ / _ \/ __| __/ _ \| '__/ __|
+  _| |_| | | | ||  __/ |  ____) |  __/ (__| |_| | (_) | | | |____) |  __/ (__| || (_) | |  \__ \
+ |_____|_| |_|\__\___|_| |_____/ \___|\___|\__|_|\___/|_| |_|_____/ \___|\___|\__\___/|_|  |___/
+                                                                                                
+                                                                                                
+```
 
-Стек вызовов на [(2ac5cb4)](https://github.com/SavaLione/InterSectionSectors/tree/2ac5cb4d921f56267ebd827ed06b101cd78cb167)
-<img src="res/Stack_2ac5cb4.svg" style="width: 300px; height: 300px;">
+|Файлы         |Описание                   |
+|--------------|---------------------------|
+|README.md     |Компиляция                 |
+|TESTS.md      |Тесты                      |
+|NEWTESTS.md   |Новые тесты                |
+|CMaleLists.txt|CMake конфигурационный файл|
+
+|Папки               |Описание                                |
+|--------------------|----------------------------------------|
+|res                 |Ресурсы                                 |
+|src                 |Исходные файлы                          |
+|src\optimized       |Оптимизированная версия программы       |
+|src\original        |Оригинальная версия программы           |
+|src\originaltimetest|Оригинальная версия программы с таймером|
+
+## Compile
+
+For Linux:
+
+    $ mkdir build
+    $ cd build
+    $ cmake ..
+    $ make
+
+For Windows:
+
+    > mkdir build
+    > cd build
+    > cmake ..\ -G "MinGW Makefiles"
+    > mingw32-make
