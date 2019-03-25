@@ -16,9 +16,14 @@ gcc version 8.1.0 (x86_64-posix-seh-rev0, Built by MinGW-W64 project)
 |Time:   6|Time:                66|
 
 500 тысяч строк входных данных без вывода в консоль
-|Optimized|Original with time test|
-|---------|-----------------------|
-|Time:  55|Time:               616|
+||Optimized|Original with time test|
+|-|---------|-----------------------|
+|optimized|Time:  55|Time:               616|
+|optimized|Time:  50|Time:                 -|
+|opt. without out (1)|Time:  36|Time:                 -|
+
+    1 - openMP main func
+
 
 #### Optimized
 |                    |Time |

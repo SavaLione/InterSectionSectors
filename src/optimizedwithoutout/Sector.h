@@ -32,10 +32,6 @@ struct Point
 	double y;
 };
 
-/* Вывод секторов в консоль */
-void PrintSetSectors(std::vector<Sector> *vector_sectors);
-
-
 /* Проверка, принадлежит ли точка сектору... */
 bool CheckPointToSector(Point *point, Sector *sector);
 

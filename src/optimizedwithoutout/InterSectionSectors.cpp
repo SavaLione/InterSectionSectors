@@ -5,9 +5,6 @@
 	Вместо листа теперь вектор
 */
 
-/* Вывод данных */
-#define DATA_OUTPUT 0
-
 /* Вывод данных о возможности использования OpenMP */
 #define PARALLEL 1
 
@@ -94,9 +91,6 @@ int main()
     int count_set = 0;
     int count_intersection = 0;
 	Point temp_point;
-#if DATA_OUTPUT
-	double radius = 0;
-#endif
 
 	vector<vector<Sector>> data;
 	data = ReadDataFromFile((char*)"data.test");
@@ -106,34 +100,20 @@ int main()
 		++i_size;
 
 	
-	// #pragma omp parallel for
+	#pragma omp parallel for
 	for(int i = 0; i < i_size; ++i)
     {
-#if DATA_OUTPUT
-		printf("Number set == %i\n", count_set);
-        PrintSetSectors(&data[i]);
-#endif
         // temp_point = CheckIntersectionSetOfSectors(&(*it));
 		temp_point = CheckIntersectionSetOfSectors(&data[i]);
 
         if (temp_point.x == 0 && temp_point.y == 0)
         {
-#if DATA_OUTPUT
-			printf("Intesection of Sectors Not Found!\n");
-#endif
+
         }
         else
         {
-#if DATA_OUTPUT
-			radius = 0;
-            Point center_circle = CreateCircleFromArea(&temp_point, &data[i], &radius);
-			printf("Center Circle -- (%lf ; %lf ),    Radius = %lf\n", center_circle.x, center_circle.y, radius);
-#endif
             count_intersection++;
         }
-#if DATA_OUTPUT
-        printf("\n\n");
-#endif
 
 		count_set++;
     }

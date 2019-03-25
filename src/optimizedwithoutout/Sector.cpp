@@ -10,27 +10,6 @@
 
 using namespace std;
 
-/* Вывод секторов в консоль */
-void PrintSetSectors(vector<Sector> *vector_sectors)
-{
-    printf("Set of Sectors\n");
-	
-	/*
-		Деректива OpenMP
-	*/
-	#pragma omp parallel
-	{
-		for(auto it = vector_sectors->begin(); it != vector_sectors->end(); ++it)
-		{
-			#pragma omp single nowait
-			{
-				printf("Sector: (%i ; %i)    Azimut - %lf     Phi = %lf    Diapazon === [%i - %i]\n", (*it).x, (*it).y, (*it).azim, (*it).phi, (*it).min, (*it).max);
-			}
-		}
-	}
-	printf("______________________________________________________________________\n\n");
-}
-
 /* Проверка, принадлежит ли точка сектору... */
 bool CheckPointToSector(Point *point, Sector *sector)
 {
@@ -71,8 +50,7 @@ Point CreateRandomPointInSector(Sector *sect)
     Point rez;
     rez.x = sect->x + radius * cos((90 - angle) * M_PI / 180);
     rez.y = sect->y + radius * sin((90 - angle) * M_PI / 180);
-
-
+	
     return rez;
 }
 
