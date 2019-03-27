@@ -48,6 +48,7 @@ Point CreateRandomPointInSector(Sector *sect)
     double angle = (sect->azim + u_i_random[1]% (2 * (int)sect->phi) - sect->phi);
 
     Point rez;
+
     rez.x = sect->x + radius * cos((90 - angle) * M_PI / 180);
     rez.y = sect->y + radius * sin((90 - angle) * M_PI / 180);
 	
@@ -143,17 +144,19 @@ Point CreateRandomPointToBorder(Point *point, vector<Sector> *vector_sectors)
 {
 	unsigned int u_i_random[4];
 	rand_sse(u_i_random);
-    int step = 5;
+    const int step = 5;
 	double angle = (u_i_random[0] % 360 ) * M_PI / 180;
 	
+	double angle_cos = cos(angle), angle_sin = sin(angle);
+
     Point current_point;
-    current_point.x = point->x + step * cos(angle);
-    current_point.y = point->y + step * sin(angle);
+    current_point.x = point->x + step * angle_cos;
+    current_point.y = point->y + step * angle_sin;
 
     while (CheckPointToSetSectors(&current_point, vector_sectors))
     {
-        current_point.x = current_point.x + step * cos(angle);
-        current_point.y = current_point.y + step * sin(angle);
+        current_point.x = current_point.x + step * angle_cos;
+        current_point.y = current_point.y + step * angle_sin;
     }
 
     return current_point;
@@ -203,6 +206,7 @@ Point CreateCircleFromArea(Point *point, vector<Sector> *vector_sectors, double 
 	#pragma omp parallel for reduction (+:sum_radius)
 	for(int i = 0; i < i_size; ++i)
 	{
+		#pragma omp atomic
 		sum_radius += sqrt(pow(vector_point_border[i].x - center_circle.x, 2.0) + pow(vector_point_border[i].y - center_circle.y, 2.0));
 	}
 	
